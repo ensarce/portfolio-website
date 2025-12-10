@@ -1,0 +1,59 @@
+<div class="min-h-screen bg-dark-gray text-white pt-20">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold text-center mb-16 text-neon-blue scroll-animation">Hakkımda</h1>
+    
+    <!-- Developer Background -->
+    <section class="mb-16 glass-effect rounded-2xl p-8 scroll-animation">
+      <h2 class="text-2xl font-bold mb-6 text-purple-300">Geliştirici Geçmişim</h2>
+      <div [innerHTML]="developerBackground" class="prose prose-invert max-w-none"></div>
+    </section>
+    
+    <!-- Healthcare Experience -->
+    <section class="mb-16 glass-effect rounded-2xl p-8 scroll-animation">
+      <h2 class="text-2xl font-bold mb-6 text-purple-300">Sağlık Sistemleri Deneyimim</h2>
+      <div [innerHTML]="healthcareExperience" class="prose prose-invert max-w-none"></div>
+    </section>
+    
+    <!-- API Integrations -->
+    <section class="mb-16 scroll-animation">
+      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">API Entegrasyonları</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div 
+          *ngFor="let integration of apiIntegrations" 
+          class="glass-effect rounded-xl p-6 hover-card"
+        >
+          <h3 class="text-xl font-bold mb-3 text-purple-300">{{ integration.name }}</h3>
+          <p class="text-gray-300">{{ integration.description }}</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Agent Jobs -->
+    <section class="mb-16 scroll-animation">
+      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">Arka Plan İşleri</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div 
+          *ngFor="let job of agentJobs" 
+          class="glass-effect rounded-xl p-6 hover-card"
+        >
+          <h3 class="text-xl font-bold mb-3 text-purple-300">{{ job.name }}</h3>
+          <p class="text-gray-300">{{ job.description }}</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Dashboard Projects -->
+    <section class="scroll-animation">
+      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">Gösterge Tabloları</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div 
+          *ngFor="let project of dashboardProjects" 
+          class="glass-effect rounded-xl p-6 hover-card"
+        >
+          <h3 class="text-xl font-bold mb-3 text-purple-300">{{ project.name }}</h3>
+          <p class="text-gray-300">{{ project.description }}</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

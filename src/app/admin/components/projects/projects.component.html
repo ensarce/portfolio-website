@@ -1,0 +1,204 @@
+<div class="min-h-screen bg-dark-gray text-white">
+  <!-- Header -->
+  <header class="glass-effect py-4 px-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-neon-blue">Proje Yönetimi</h1>
+    <button 
+      (click)="router.navigate(['/admin/dashboard'])" 
+      class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+    >
+      Geri
+    </button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <!-- Add New Project Button -->
+    <div class="mb-8">
+      <button 
+        (click)="addProject()" 
+        class="bg-neon-blue hover:bg-purple-500 text-dark-gray font-bold py-2 px-4 rounded transition duration-300 flex items-center"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        Yeni Proje Ekle
+      </button>
+    </div>
+
+    <!-- Edit Project Form -->
+    <div *ngIf="editingProject" class="glass-effect rounded-2xl p-6 mb-8">
+      <h2 class="text-2xl font-bold mb-6 text-neon-blue">
+        {{ isNewProject ? 'Yeni Proje Ekle' : 'Projeyi Düzenle' }}
+      </h2>
+      
+      <form (ngSubmit)="saveProject()" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-gray-300 mb-2">Başlık</label>
+            <input 
+              type="text" 
+              [(ngModel)]="projectForm.title" 
+              name="title"
+              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-blue"
+              required
+            >
+          </div>
+          
+          <div>
+            <label class="block text-gray-300 mb-2">Kategori</label>
+            <input 
+              type="text" 
+              [(ngModel)]="projectForm.category" 
+              name="category"
+              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-blue"
+              required
+            >
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-gray-300 mb-2">Açıklama</label>
+          <textarea 
+            [(ngModel)]="projectForm.description" 
+            name="description"
+            rows="4"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            required
+          ></textarea>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-gray-300 mb-2">Görsel URL</label>
+            <input 
+              type="text" 
+              [(ngModel)]="projectForm.image" 
+              name="image"
+              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            >
+          </div>
+          
+          <div>
+            <label class="block text-gray-300 mb-2">Canlı Demo URL</label>
+            <input 
+              type="text" 
+              [(ngModel)]="projectForm.liveDemo" 
+              name="liveDemo"
+              class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            >
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-gray-300 mb-2">GitHub URL</label>
+          <input 
+            type="text" 
+            [(ngModel)]="projectForm.github" 
+            name="github"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-blue"
+          >
+        </div>
+        
+        <div>
+          <label class="block text-gray-300 mb-2">Teknolojiler</label>
+          <div class="flex">
+            <input 
+              type="text" 
+              [(ngModel)]="technologyInput" 
+              (keyup.enter)="addTechnology()"
+              placeholder="Teknoloji adı girin ve Enter'a basın"
+              class="flex-grow bg-gray-800 border border-gray-700 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            >
+            <button 
+              type="button"
+              (click)="addTechnology()"
+              class="bg-neon-blue text-dark-gray font-bold py-2 px-4 rounded-r-lg transition duration-300"
+            >
+              Ekle
+            </button>
+          </div>
+          
+          <div class="mt-2 flex flex-wrap gap-2">
+            <span 
+              *ngFor="let tech of projectForm.technologies; let i = index"
+              class="bg-purple-600 text-white px-3 py-1 rounded-full flex items-center"
+            >
+              {{ tech }}
+              <button 
+                type="button"
+                (click)="removeTechnology(i)"
+                class="ml-2 text-white hover:text-red-300"
+              >
+                ×
+              </button>
+            </span>
+          </div>
+        </div>
+        
+        <div class="flex space-x-4">
+          <button 
+            type="submit" 
+            class="bg-neon-blue hover:bg-purple-500 text-dark-gray font-bold py-2 px-6 rounded transition duration-300"
+          >
+            Kaydet
+          </button>
+          <button 
+            type="button"
+            (click)="cancelEdit()"
+            class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded transition duration-300"
+          >
+            İptal
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Projects List -->
+    <div *ngIf="!editingProject" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div 
+        *ngFor="let project of projects" 
+        class="glass-effect rounded-2xl overflow-hidden hover-card"
+      >
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="text-xl font-bold text-purple-300">{{ project.title }}</h3>
+            <span class="bg-gray-700 text-gray-300 text-xs px-2 py-1 rounded">{{ project.category }}</span>
+          </div>
+          
+          <p class="text-gray-300 mb-4 text-sm">{{ project.description }}</p>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span 
+              *ngFor="let tech of project.technologies" 
+              class="bg-gray-700 text-gray-300 text-xs px-2 py-1 rounded"
+            >
+              {{ tech }}
+            </span>
+          </div>
+          
+          <div class="flex justify-between">
+            <button 
+              (click)="editProject(project)"
+              class="text-neon-blue hover:text-purple-300 font-medium flex items-center text-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Düzenle
+            </button>
+            
+            <button 
+              (click)="deleteProject(project.id)"
+              class="text-red-500 hover:text-red-400 font-medium flex items-center text-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Sil
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,55 @@
+// Glass effect
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    transform: translateY(-5px);
+  }
+}
+
+// Hover card effect
+.hover-card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Project image placeholder
+.project-image {
+  height: 12rem;
+  background-size: cover;
+  background-position: center;
+}
+
+// Category filter buttons
+.category-btn {
+  transition: all 0.3s ease;
+  
+  &.active {
+    background: linear-gradient(90deg, #8b5cf6, #00f7ff);
+    color: #1a202c;
+    font-weight: bold;
+  }
+  
+  &:not(.active):hover {
+    background: rgba(139, 92, 246, 0.2);
+  }
+}
+
+// Technology tags
+.tech-tag {
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba(139, 92, 246, 0.3) !important;
+    transform: scale(1.05);
+  }
+}

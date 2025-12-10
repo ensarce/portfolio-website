@@ -1,0 +1,51 @@
+<nav class="navbar fixed w-full z-50 py-4 px-6">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <!-- Logo -->
+    <div class="text-2xl font-bold text-neon-blue">
+      <a routerLink="/">Portföy</a>
+    </div>
+    
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex space-x-8">
+      <a 
+        *ngFor="let item of navItems" 
+        [routerLink]="item.path" 
+        routerLinkActive="active"
+        class="nav-link text-lg font-medium"
+      >
+        {{ item.name }}
+      </a>
+    </div>
+    
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button 
+        (click)="toggleMenu()" 
+        class="hamburger focus:outline-none"
+        [class.active]="isMenuOpen"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div 
+    class="mobile-menu md:hidden fixed inset-0 z-40 mt-16 transition-all duration-300 ease-in-out"
+    [class.hidden]="!isMenuOpen"
+  >
+    <div class="flex flex-col items-center py-8 space-y-6">
+      <a 
+        *ngFor="let item of navItems" 
+        [routerLink]="item.path" 
+        routerLinkActive="active"
+        (click)="toggleMenu()"
+        class="nav-link text-xl font-medium py-2 px-4"
+      >
+        {{ item.name }}
+      </a>
+    </div>
+  </div>
+</nav>

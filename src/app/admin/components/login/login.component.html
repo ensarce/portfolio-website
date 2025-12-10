@@ -1,0 +1,60 @@
+<div class="min-h-screen flex items-center justify-center bg-dark-gray py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 glass-effect rounded-2xl p-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-neon-blue">
+        Yönetici Paneli
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-300">
+        Giriş yapmak için bilgilerinizi girin
+      </p>
+    </div>
+    <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()">
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="username" class="sr-only">Kullanıcı Adı</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            [(ngModel)]="username"
+            required
+            class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-700 placeholder-gray-500 text-white rounded-t-md bg-gray-800 focus:outline-none focus:ring-neon-blue focus:border-neon-blue focus:z-10 sm:text-sm"
+            placeholder="Kullanıcı Adı"
+          />
+        </div>
+        <div>
+          <label for="password" class="sr-only">Şifre</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            [(ngModel)]="password"
+            required
+            class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-700 placeholder-gray-500 text-white rounded-b-md bg-gray-800 focus:outline-none focus:ring-neon-blue focus:border-neon-blue focus:z-10 sm:text-sm"
+            placeholder="Şifre"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="rounded-md bg-red-900 p-4">
+        <div class="text-sm text-red-300">
+          {{ errorMessage }}
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-dark-gray bg-neon-blue hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neon-blue transition duration-300"
+        >
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg class="h-5 w-5 text-dark-gray group-hover:text-dark-gray" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg>
+          </span>
+          Giriş Yap
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
