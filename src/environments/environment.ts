@@ -6,12 +6,12 @@ export const environment = {
   production: false,
   portfolioDataUrl: '/assets/data/portfolio-data.json',
   firebaseConfig: {
-    apiKey: "YOUR_ACTUAL_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyARiEkRPkyJokcAObM9t5oc5z_69rUKUVg",
+    authDomain: "portfolio-website-a09d0.firebaseapp.com",
+    projectId: "portfolio-website-a09d0",
+    storageBucket: "portfolio-website-a09d0.firebasestorage.app",
+    messagingSenderId: "902960792456",
+    appId: "1:902960792456:web:09c27a63cca9afc7d0303d"
   }
 };
 
