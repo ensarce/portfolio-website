@@ -80,9 +80,9 @@ export class AdminSkillsComponent implements OnInit {
     this.editingSkillIndex = null;
   }
 
-  saveCategory(): void {
+  async saveCategory(): Promise<void> {
     if (this.isNewCategory) {
-      this.dataService.addSkillCategory(this.categoryForm);
+      await this.dataService.addSkillCategory(this.categoryForm);
       // Update local array to reflect the new category
       this.skillCategories = [...this.skillCategories, this.categoryForm];
     } else {
@@ -91,14 +91,14 @@ export class AdminSkillsComponent implements OnInit {
         cat.category === this.categoryForm.category ? this.categoryForm : cat
       );
       // Save all categories to the data service
-      this.dataService.updateSkills(this.skillCategories);
+      await this.dataService.updateSkills(this.skillCategories);
     }
     this.editingCategory = null;
   }
 
-  deleteCategory(categoryName: string): void {
+  async deleteCategory(categoryName: string): Promise<void> {
     if (confirm(`${categoryName} kategorisini silmek istediğinizden emin misiniz?`)) {
-      this.dataService.deleteSkillCategory(categoryName);
+      await this.dataService.deleteSkillCategory(categoryName);
       // Update local array to reflect the deletion
       this.skillCategories = this.skillCategories.filter(cat => cat.category !== categoryName);
     }
@@ -128,7 +128,7 @@ export class AdminSkillsComponent implements OnInit {
     }
   }
 
-  deleteSkill(index: number): void {
+  async deleteSkill(index: number): Promise<void> {
     if (this.editingCategory) {
       if (confirm('Bu yeteneği silmek istediğinizden emin misiniz?')) {
         this.editingCategory.items.splice(index, 1);

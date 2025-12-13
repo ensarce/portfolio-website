@@ -2,8 +2,11 @@
   <!-- Hero Section -->
   <section class="py-20 px-4 text-center scroll-animation">
     <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl md:text-6xl font-bold mb-6 text-neon-blue">{{ heroTitle }}</h1>
-      <p class="text-xl md:text-2xl mb-8 text-purple-300">{{ heroSubtitle }}</p>
+      <div class="mb-6">
+        <i class="fas fa-laptop-code text-6xl text-neon-blue"></i>
+      </div>
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 text-neon-blue">{{ homePageContent.heroTitle }}</h1>
+      <p class="text-xl md:text-2xl mb-8 text-purple-300">{{ homePageContent.heroSubtitle }}</p>
       <button (click)="navigateToProjects()" class="bg-neon-blue text-dark-gray font-bold py-3 px-8 rounded-full text-lg hover:bg-purple-500 transition duration-300 transform hover:scale-105">
         Projelerime Göz Atın
       </button>
@@ -13,18 +16,25 @@
   <!-- Short Bio Section -->
   <section class="py-16 px-4 bg-gray-900 scroll-animation">
     <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold mb-8 text-center text-neon-blue">Hakkımda</h2>
-      <p class="text-lg leading-relaxed text-gray-300">{{ shortBio }}</p>
+      <h2 class="text-3xl font-bold mb-8 text-center text-neon-blue">
+        <i class="fas fa-user mr-2"></i>Hakkımda
+      </h2>
+      <p class="text-lg leading-relaxed text-gray-300">{{ homePageContent.shortBio }}</p>
     </div>
   </section>
 
   <!-- Technology Stack Section -->
   <section class="py-16 px-4 scroll-animation">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-12 text-center text-neon-blue">Teknoloji Yığınım</h2>
+      <h2 class="text-3xl font-bold mb-12 text-center text-neon-blue">
+        <i class="fas fa-toolbox mr-2"></i>Teknoloji Yığınım
+      </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div *ngFor="let tech of technologies" class="bg-gray-800 p-6 rounded-xl shadow-lg hover-card">
-          <h3 class="text-xl font-semibold mb-2 text-purple-300">{{ tech.name }}</h3>
+          <div class="flex items-center mb-3">
+            <i [class]="tech.icon" class="text-neon-blue text-2xl mr-3"></i>
+            <h3 class="text-xl font-semibold text-purple-300">{{ tech.name }}</h3>
+          </div>
           <div class="w-full bg-gray-700 rounded-full h-4">
             <div 
               class="bg-neon-blue h-4 rounded-full" 
@@ -40,11 +50,16 @@
   <!-- Featured Projects Section -->
   <section class="py-16 px-4 bg-gray-900 scroll-animation">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-12 text-center text-neon-blue">Öne Çıkan Projeler</h2>
+      <h2 class="text-3xl font-bold mb-12 text-center text-neon-blue">
+        <i class="fas fa-star mr-2"></i>Öne Çıkan Projeler
+      </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div *ngFor="let project of featuredProjects" class="bg-gray-800 rounded-xl overflow-hidden shadow-lg hover-card">
           <div class="p-6">
-            <h3 class="text-2xl font-bold mb-3 text-purple-300">{{ project.title }}</h3>
+            <div class="flex items-center mb-3">
+              <i class="fas fa-folder-open text-neon-blue text-xl mr-2"></i>
+              <h3 class="text-2xl font-bold text-purple-300">{{ project.title }}</h3>
+            </div>
             <p class="text-gray-300 mb-4">{{ project.description }}</p>
             <div class="flex flex-wrap gap-2">
               <span 
@@ -63,6 +78,9 @@
   <!-- Call to Action Section -->
   <section class="py-20 px-4 text-center scroll-animation">
     <div class="max-w-3xl mx-auto">
+      <div class="mb-6">
+        <i class="fas fa-hands-helping text-5xl text-neon-blue"></i>
+      </div>
       <h2 class="text-3xl md:text-4xl font-bold mb-6 text-neon-blue">Birlikte Çalışalım!</h2>
       <p class="text-xl mb-8 text-gray-300">İlginizi çektiyse, birlikte çalışmak için iletişime geçin.</p>
       <button (click)="navigateToContact()" class="bg-purple-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-neon-blue transition duration-300 transform hover:scale-105">

@@ -23,7 +23,7 @@ export class ProjectsComponent implements OnInit {
     private seoService: SeoService
   ) {}
   
-  ngOnInit() {
+  async ngOnInit() {
     // Set SEO metadata
     this.seoService.updateMetaTags(
       'Projeler - Yazılım Geliştirici Portföyü',
@@ -32,7 +32,8 @@ export class ProjectsComponent implements OnInit {
       'assets/images/projects-preview.jpg'
     );
     
-    this.portfolioDataService.getProjects().subscribe(projects => {
+    const projectsObservable = await this.portfolioDataService.getProjects();
+    projectsObservable.subscribe(projects => {
       this.projects = projects;
       this.filteredProjects = projects;
       
@@ -44,9 +45,10 @@ export class ProjectsComponent implements OnInit {
     });
   }
   
-  filterProjects(category: string) {
+  async filterProjects(category: string) {
     this.selectedCategory = category;
-    this.portfolioDataService.getProjectsByCategory(category).subscribe(projects => {
+    const projectsObservable = await this.portfolioDataService.getProjectsByCategory(category);
+    projectsObservable.subscribe(projects => {
       this.filteredProjects = projects;
       
       // Reinitialize animations after filtering

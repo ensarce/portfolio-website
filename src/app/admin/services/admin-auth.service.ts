@@ -2,6 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { AdminUser } from '../models/admin-user.model';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,12 @@ export class AdminAuthService {
 
   constructor(
     private router: Router,
+    private firebaseService: FirebaseService,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     
-    // Check if user is already logged in (from localStorage)
+    // Check if user is already logged in
     if (this.isBrowser) {
       const storedUser = localStorage.getItem('adminUser');
       if (storedUser) {
@@ -27,15 +29,16 @@ export class AdminAuthService {
     }
   }
 
-  login(username: string, password: string): boolean {
-    // In a real application, this would be an API call
-    // For demo purposes, we'll use a simple check
-    if (username === 'admin' && password === 'admin123') {
+  async login(username: string, password: string): Promise<boolean> {
+    try {
+      // Firebase authentication
+      const user = await this.firebaseService.login(username, password);
+      
+      // Create admin user object
       this.adminUser = {
-        id: '1',
-        username: 'admin',
-        password: 'admin123',
-        email: 'admin@example.com',
+        id: user.uid,
+        username: user.email,
+        email: user.email,
         createdAt: new Date()
       };
       
@@ -44,11 +47,14 @@ export class AdminAuthService {
         localStorage.setItem('adminUser', JSON.stringify(this.adminUser));
       }
       return true;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
     }
-    return false;
   }
 
   logout(): void {
+    this.firebaseService.logout();
     this.isLoggedIn = false;
     this.adminUser = null;
     if (this.isBrowser) {

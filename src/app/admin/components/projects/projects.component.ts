@@ -79,18 +79,18 @@ export class AdminProjectsComponent implements OnInit {
     this.editingProject = null;
   }
 
-  saveProject(): void {
+  async saveProject(): Promise<void> {
     if (this.isNewProject) {
-      this.dataService.addProject(this.projectForm);
+      await this.dataService.addProject(this.projectForm);
     } else {
-      this.dataService.updateProject(this.projectForm);
+      await this.dataService.updateProject(this.projectForm);
     }
     this.editingProject = null;
   }
 
-  deleteProject(id: number): void {
+  async deleteProject(id: number): Promise<void> {
     if (confirm('Bu projeyi silmek istediğinizden emin misiniz?')) {
-      this.dataService.deleteProject(id);
+      await this.dataService.deleteProject(id);
     }
   }
 

@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { FirebaseService } from './firebase.service';
 
 export interface Project {
   id: number;
@@ -127,12 +128,25 @@ const mockData: PortfolioData = {
 export class PortfolioDataService {
   private jsonDataUrl = environment.portfolioDataUrl;
   
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private firebaseService: FirebaseService
+  ) { }
 
-  getProjects(): Observable<Project[]> {
+  async getProjects(): Promise<Observable<Project[]>> {
     if (typeof window === 'undefined') {
       // Server-side rendering - return mock data
       return of(mockData.projects);
+    }
+    
+    try {
+      // Try to get projects from Firebase
+      const projects = await this.firebaseService.getProjects();
+      if (projects && projects.length > 0) {
+        return of(projects);
+      }
+    } catch (error) {
+      console.warn('Failed to load projects from Firebase, checking localStorage');
     }
     
     // Check if admin data exists in localStorage
@@ -151,7 +165,7 @@ export class PortfolioDataService {
     );
   }
 
-  getProjectsByCategory(category: string): Observable<Project[]> {
+  async getProjectsByCategory(category: string): Promise<Observable<Project[]>> {
     if (typeof window === 'undefined') {
       // Server-side rendering - return mock data
       if (category === 'All') {
@@ -160,19 +174,26 @@ export class PortfolioDataService {
       return of(mockData.projects.filter(project => project.category === category));
     }
     
-    // Check if admin data exists in localStorage
-    const storedProjects = localStorage.getItem('adminProjects');
     let projects: Project[] = [];
     
-    if (storedProjects) {
-      try {
-        projects = JSON.parse(storedProjects);
-      } catch (e) {
-        console.warn('Failed to parse admin projects data, using default data');
+    try {
+      // Try to get projects from Firebase
+      projects = await this.firebaseService.getProjects();
+    } catch (error) {
+      console.warn('Failed to load projects from Firebase');
+      
+      // Check if admin data exists in localStorage
+      const storedProjects = localStorage.getItem('adminProjects');
+      if (storedProjects) {
+        try {
+          projects = JSON.parse(storedProjects);
+        } catch (e) {
+          console.warn('Failed to parse admin projects data, using default data');
+          projects = mockData.projects;
+        }
+      } else {
         projects = mockData.projects;
       }
-    } else {
-      projects = mockData.projects;
     }
     
     if (category === 'All') {
@@ -181,10 +202,20 @@ export class PortfolioDataService {
     return of(projects.filter(project => project.category === category));
   }
 
-  getSkills(): Observable<SkillCategory[]> {
+  async getSkills(): Promise<Observable<SkillCategory[]>> {
     if (typeof window === 'undefined') {
       // Server-side rendering - return mock data
       return of(mockData.skills);
+    }
+    
+    try {
+      // Try to get skills from Firebase
+      const skills = await this.firebaseService.getSkills();
+      if (skills && skills.length > 0) {
+        return of(skills);
+      }
+    } catch (error) {
+      console.warn('Failed to load skills from Firebase, checking localStorage');
     }
     
     // Check if admin data exists in localStorage

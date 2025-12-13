@@ -1,0 +1,259 @@
+<div class="min-h-screen bg-dark-gray text-white">
+  <!-- Header -->
+  <header class="glass-effect py-4 px-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-neon-blue">İçerik Yönetimi</h1>
+    <a 
+      routerLink="/admin/dashboard" 
+      class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+    >
+      Geri Dön
+    </a>
+  </header>
+
+  <!-- Tab Navigation -->
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <div class="flex border-b border-gray-700 mb-6">
+      <button 
+        (click)="setActiveTab('home')"
+        [class.active]="activeTab === 'home'"
+        class="py-2 px-4 font-medium text-gray-300 hover:text-white border-b-2 border-transparent hover:border-neon-blue"
+      >
+        Ana Sayfa
+      </button>
+      <button 
+        (click)="setActiveTab('about')"
+        [class.active]="activeTab === 'about'"
+        class="py-2 px-4 font-medium text-gray-300 hover:text-white border-b-2 border-transparent hover:border-neon-blue"
+      >
+        Hakkında
+      </button>
+      <button 
+        (click)="setActiveTab('contact')"
+        [class.active]="activeTab === 'contact'"
+        class="py-2 px-4 font-medium text-gray-300 hover:text-white border-b-2 border-transparent hover:border-neon-blue"
+      >
+        İletişim
+      </button>
+    </div>
+
+    <!-- Home Page Content -->
+    <div *ngIf="activeTab === 'home'" class="glass-effect rounded-2xl p-6">
+      <h2 class="text-2xl font-bold mb-6 text-neon-blue">Ana Sayfa İçeriği</h2>
+      
+      <form (ngSubmit)="saveHomePageContent()">
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Başlık</label>
+          <input 
+            type="text" 
+            [(ngModel)]="homePageContent.heroTitle"
+            name="heroTitle"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Ana sayfa başlığı"
+          >
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Alt Başlık</label>
+          <textarea 
+            [(ngModel)]="homePageContent.heroSubtitle"
+            name="heroSubtitle"
+            rows="3"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Ana sayfa alt başlığı"
+          ></textarea>
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Kısa Biyografi</label>
+          <textarea 
+            [(ngModel)]="homePageContent.shortBio"
+            name="shortBio"
+            rows="5"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Kısa biyografi"
+          ></textarea>
+        </div>
+        
+        <button 
+          type="submit"
+          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
+        >
+          Kaydet
+        </button>
+      </form>
+    </div>
+
+    <!-- About Page Content -->
+    <div *ngIf="activeTab === 'about'" class="glass-effect rounded-2xl p-6">
+      <h2 class="text-2xl font-bold mb-6 text-neon-blue">Hakkında Sayfası İçeriği</h2>
+      
+      <form (ngSubmit)="saveAboutPageContent()">
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Başlık</label>
+          <input 
+            type="text" 
+            [(ngModel)]="aboutPageContent.title"
+            name="aboutTitle"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Hakkında sayfası başlığı"
+          >
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">İçerik</label>
+          <textarea 
+            [(ngModel)]="aboutPageContent.content"
+            name="aboutContent"
+            rows="8"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Hakkında sayfası içeriği"
+          ></textarea>
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Profil Resmi URL</label>
+          <input 
+            type="text" 
+            [(ngModel)]="aboutPageContent.imageUrl"
+            name="imageUrl"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Profil resmi URL"
+          >
+        </div>
+        
+        <button 
+          type="submit"
+          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
+        >
+          Kaydet
+        </button>
+      </form>
+    </div>
+
+    <!-- Contact Page Content -->
+    <div *ngIf="activeTab === 'contact'" class="glass-effect rounded-2xl p-6">
+      <h2 class="text-2xl font-bold mb-6 text-neon-blue">İletişim Sayfası İçeriği</h2>
+      
+      <form (ngSubmit)="saveContactPageContent()">
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Başlık</label>
+          <input 
+            type="text" 
+            [(ngModel)]="contactPageContent.title"
+            name="contactTitle"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="İletişim sayfası başlığı"
+          >
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">E-posta</label>
+          <input 
+            type="email" 
+            [(ngModel)]="contactPageContent.email"
+            name="email"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="E-posta adresi"
+          >
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Telefon</label>
+          <input 
+            type="text" 
+            [(ngModel)]="contactPageContent.phone"
+            name="phone"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Telefon numarası"
+          >
+        </div>
+        
+        <div class="mb-6">
+          <label class="block text-gray-300 mb-2">Adres</label>
+          <input 
+            type="text" 
+            [(ngModel)]="contactPageContent.address"
+            name="address"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Adres"
+          >
+        </div>
+        
+        <!-- Social Links -->
+        <div class="mb-6">
+          <h3 class="text-xl font-bold mb-4 text-purple-300">Sosyal Medya Bağlantıları</h3>
+          
+          <div class="mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div>
+                <label class="block text-gray-300 mb-2">Ad</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="newSocialLink.name"
+                  name="socialName"
+                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  placeholder="Örn: LinkedIn"
+                >
+              </div>
+              <div>
+                <label class="block text-gray-300 mb-2">URL</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="newSocialLink.url"
+                  name="socialUrl"
+                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  placeholder="https://..."
+                >
+              </div>
+              <div>
+                <label class="block text-gray-300 mb-2">İkon (Font Awesome)</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="newSocialLink.icon"
+                  name="socialIcon"
+                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  placeholder="fab fa-linkedin"
+                >
+              </div>
+            </div>
+            <button 
+              type="button"
+              (click)="addSocialLink()"
+              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+            >
+              Bağlantı Ekle
+            </button>
+          </div>
+          
+          <div class="mt-4">
+            <div 
+              *ngFor="let link of contactPageContent.socialLinks; let i = index" 
+              class="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
+            >
+              <div class="flex items-center">
+                <i [class]="link.icon" class="text-neon-blue mr-3"></i>
+                <span>{{ link.name }}</span>
+              </div>
+              <button 
+                type="button"
+                (click)="removeSocialLink(i)"
+                class="text-red-500 hover:text-red-400"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <button 
+          type="submit"
+          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
+        >
+          Kaydet
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

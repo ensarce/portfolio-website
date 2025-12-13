@@ -20,7 +20,7 @@ export class SkillsComponent implements OnInit {
     private seoService: SeoService
   ) {}
   
-  ngOnInit() {
+  async ngOnInit() {
     // Set SEO metadata
     this.seoService.updateMetaTags(
       'Yetenekler - Yazılım Geliştirici Portföyü',
@@ -29,7 +29,8 @@ export class SkillsComponent implements OnInit {
       'assets/images/skills-preview.jpg'
     );
     
-    this.portfolioDataService.getSkills().subscribe(skills => {
+    const skillsObservable = await this.portfolioDataService.getSkills();
+    skillsObservable.subscribe(skills => {
       this.technologies = skills;
       
       // Initialize animations after data loads

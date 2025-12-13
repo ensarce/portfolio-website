@@ -1,5 +1,12 @@
 export const environment = {
   production: true,
-  apiUrl: '/api',
-  portfolioDataUrl: 'assets/data/portfolio-data.json'
+  portfolioDataUrl: '/assets/data/portfolio-data.json',
+  firebaseConfig: {
+    apiKey: "YOUR_ACTUAL_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  }
 };

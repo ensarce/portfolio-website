@@ -1,0 +1,21 @@
+/* Content Management Component Styles */
+
+:host {
+  display: block;
+}
+
+.active {
+  color: #00eeff !important;
+  border-color: #00eeff !important;
+}
+
+input, textarea, select {
+  &::placeholder {
+    color: #9ca3af;
+  }
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

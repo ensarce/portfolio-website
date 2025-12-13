@@ -1,7 +1,7 @@
 export interface AdminUser {
   id: string;
   username: string;
-  password: string; // In a real application, this would be hashed
+  password?: string; // Optional for Firebase authentication
   email: string;
   createdAt: Date;
 }

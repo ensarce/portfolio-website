@@ -17,10 +17,10 @@ export class NavigationComponent {
   }
   
   navItems = [
-    { name: 'Ana Sayfa', path: '/' },
-    { name: 'Hakkımda', path: '/about' },
-    { name: 'Yetenekler', path: '/skills' },
-    { name: 'Projeler', path: '/projects' },
-    { name: 'İletişim', path: '/contact' }
+    { name: 'Ana Sayfa', path: '/', icon: 'fas fa-home' },
+    { name: 'Hakkımda', path: '/about', icon: 'fas fa-user' },
+    { name: 'Yetenekler', path: '/skills', icon: 'fas fa-tools' },
+    { name: 'Projeler', path: '/projects', icon: 'fas fa-project-diagram' },
+    { name: 'İletişim', path: '/contact', icon: 'fas fa-envelope' }
   ];
 }

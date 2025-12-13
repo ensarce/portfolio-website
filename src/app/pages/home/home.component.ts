@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AnimationService } from '../../services/animation.service';
 import { SeoService } from '../../services/seo.service';
+import { ContentManagementService, HomePageContent } from '../../admin/services/content-management.service';
 
 @Component({
   selector: 'app-home',
@@ -12,24 +13,23 @@ import { SeoService } from '../../services/seo.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  // Hero section data
-  heroTitle = 'Merhaba, Ben Bir Yazılım Geliştiricisiyim';
-  heroSubtitle = 'C#, .NET, Angular ve Sağlık Sistemleri alanında uzmanlaşmış bir geliştirici olarak, kullanıcı odaklı çözümler üretiyorum.';
-  
-  // Short bio data
-  shortBio = 'Yaklaşık 5 yıldır yazılım geliştirme领域inde çalışan bir profesyonel olarak, özellikle sağlık sektöründe entegre sistemler üzerine yoğunlaştım. Geliştirdiğim çözümlerle hastanelerde verimliliği artırmayı ve hasta deneyimini iyileştirmeyi hedefliyorum.';
-  
+  homePageContent: HomePageContent = {
+    heroTitle: 'Merhaba, Ben Bir Yazılım Geliştiricisiyim',
+    heroSubtitle: 'C#, .NET, Angular ve Sağlık Sistemleri alanında uzmanlaşmış bir geliştirici olarak, kullanıcı odaklı çözümler üretiyorum.',
+    shortBio: 'Yaklaşık 5 yıldır yazılım geliştirme alanında çalışan bir profesyonel olarak, özellikle sağlık sektöründe entegre sistemler üzerine yoğunlaştım. Geliştirdiğim çözümlerle hastanelerde verimliliği artırmayı ve hasta deneyimini iyileştirmeyi hedefliyorum.'
+  };
+
   // Technology stack data
   technologies = [
-    { name: 'C#', level: 90 },
-    { name: '.NET', level: 85 },
-    { name: 'Angular', level: 80 },
-    { name: 'SQL', level: 75 },
-    { name: 'REST API', level: 85 },
-    { name: 'DevExpress', level: 70 },
-    { name: 'WordPress', level: 65 },
-    { name: 'Agent Jobs', level: 75 },
-    { name: 'Automation Systems', level: 80 }
+    { name: 'C#', level: 90, icon: 'fab fa-microsoft' },
+    { name: '.NET', level: 85, icon: 'fas fa-network-wired' },
+    { name: 'Angular', level: 80, icon: 'fab fa-angular' },
+    { name: 'SQL', level: 75, icon: 'fas fa-database' },
+    { name: 'REST API', level: 85, icon: 'fas fa-exchange-alt' },
+    { name: 'DevExpress', level: 70, icon: 'fas fa-chart-bar' },
+    { name: 'WordPress', level: 65, icon: 'fab fa-wordpress' },
+    { name: 'Agent Jobs', level: 75, icon: 'fas fa-tasks' },
+    { name: 'Automation Systems', level: 80, icon: 'fas fa-robot' }
   ];
   
   // Featured projects data
@@ -54,7 +54,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private animationService: AnimationService,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private contentService: ContentManagementService
   ) {}
   
   ngOnInit() {
@@ -65,6 +66,11 @@ export class HomeComponent implements OnInit {
       'yazılım geliştirici, C#, .NET, Angular, sağlık sistemleri, portföy',
       'assets/images/portfolio-preview.jpg'
     );
+    
+    // Load content from service
+    this.contentService.getHomePageContent().subscribe(content => {
+      this.homePageContent = {...content};
+    });
     
     // Initialize animations after view loads
     setTimeout(() => {
