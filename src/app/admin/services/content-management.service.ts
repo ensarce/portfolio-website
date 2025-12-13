@@ -1,7 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FirebaseService } from '../../services/firebase.service';
 
 export interface HomePageContent {
   heroTitle: string;
@@ -11,8 +10,27 @@ export interface HomePageContent {
 
 export interface AboutPageContent {
   title: string;
-  content: string;
+  developerBackground: string;
+  healthcareExperience: string;
+  apiIntegrations: ApiIntegration[];
+  agentJobs: AgentJob[];
+  dashboardProjects: DashboardProject[];
   imageUrl: string;
+}
+
+export interface ApiIntegration {
+  name: string;
+  description: string;
+}
+
+export interface AgentJob {
+  name: string;
+  description: string;
+}
+
+export interface DashboardProject {
+  name: string;
+  description: string;
 }
 
 export interface ContactPageContent {
@@ -44,7 +62,68 @@ export class ContentManagementService {
   
   private defaultAboutPageContent: AboutPageContent = {
     title: 'Hakkımda',
-    content: 'Detaylı bilgilerimi burada bulabilirsiniz...',
+    developerBackground: `
+    <p>Yazılım geliştirmesine 5 yıl önce başladım ve o zamandan beri sürekli öğrenmeye ve kendimi geliştirmeye devam ediyorum. 
+    Başlangıçta C# ve .NET teknolojileriyle masaüstü uygulamalar geliştirerek kariyerime başladım.</p>
+    
+    <p>Zamanla web teknolojilerine yönelerek Angular ile frontend geliştirme konusunda da uzmanlaştım. 
+    Özellikle sağlık sektöründe çalışmak beni çok ilgilendiriyor çünkü bu alanda geliştirdiğim çözümler 
+    doğrudan insan hayatına dokunuyor ve fark yaratıyor.</p>
+  `,
+    healthcareExperience: `
+    <p>Sağlık sektöründe 3 yıldır aktif olarak çalışıyorum ve bu süreçte hastanelerde kullanılan çeşitli sistemlerin 
+    entegrasyonu ve iyileştirilmesi üzerine projelerde yer aldım. Bu projeler arasında:</p>
+    
+    <ul class="list-disc pl-6 mt-4 space-y-2">
+      <li>Hasta takip sistemleri</li>
+      <li>Oda durumu monitörleri</li>
+      <li>Radyoloji istek ve raporlama sistemleri</li>
+      <li>Ameliyathane planlama sistemleri</li>
+      <li>Fatura ve muayene entegrasyonları</li>
+    </ul>
+  `,
+    apiIntegrations: [
+      {
+        name: 'MHRS Entegrasyonu',
+        description: 'Merkezi Hekim Randevu Sistemi ile entegrasyon'
+      },
+      {
+        name: 'E-Nabız Entegrasyonu',
+        description: 'Ulusal elektronik sağlık kayıt sistemine bağlanma'
+      },
+      {
+        name: 'Medula Entegrasyonu',
+        description: 'Sosyal Güvenlik Kurumu faturalama sistemi'
+      }
+    ],
+    agentJobs: [
+      {
+        name: 'Veri Senkronizasyonu',
+        description: 'Farklı sistemler arasında veri aktarımı'
+      },
+      {
+        name: 'Rapor Oluşturma',
+        description: 'Otomatik rapor oluşturma ve dağıtımı'
+      },
+      {
+        name: 'Bildirim Sistemleri',
+        description: 'SMS ve e-posta bildirimleri'
+      }
+    ],
+    dashboardProjects: [
+      {
+        name: 'Hastane Yönetim Paneli',
+        description: 'Hastane personeli için merkezi yönetim paneli'
+      },
+      {
+        name: 'Doktor Performans Gösterge Tablosu',
+        description: 'Doktorların performans metriklerinin görselleştirilmesi'
+      },
+      {
+        name: 'Hasta Memnuniyeti İzleme',
+        description: 'Hasta memnuniyeti metriklerinin takibi'
+      }
+    ],
     imageUrl: 'assets/images/profile.jpg'
   };
   
@@ -65,40 +144,11 @@ export class ContentManagementService {
   private aboutPageContentSubject = new BehaviorSubject<AboutPageContent>(this.defaultAboutPageContent);
   private contactPageContentSubject = new BehaviorSubject<ContactPageContent>(this.defaultContactPageContent);
   
-  constructor(
-    private firebaseService: FirebaseService,
-    @Inject(PLATFORM_ID) platformId: Object
-  ) {
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
     
-    // Load content from Firebase if available
+    // Load content from localStorage if available
     if (this.isBrowser) {
-      this.loadContentFromFirebase();
-    }
-  }
-  
-  private async loadContentFromFirebase(): Promise<void> {
-    try {
-      // Load home page content
-      const homeContent = await this.firebaseService.getHomePageContent();
-      if (homeContent) {
-        this.homePageContentSubject.next(homeContent);
-      }
-      
-      // Load about page content
-      const aboutContent = await this.firebaseService.getAboutPageContent();
-      if (aboutContent) {
-        this.aboutPageContentSubject.next(aboutContent);
-      }
-      
-      // Load contact page content
-      const contactContent = await this.firebaseService.getContactPageContent();
-      if (contactContent) {
-        this.contactPageContentSubject.next(contactContent);
-      }
-    } catch (e) {
-      console.warn('Failed to load content from Firebase, using default content');
-      // Load from localStorage as fallback
       this.loadContentFromStorage();
     }
   }
@@ -130,17 +180,10 @@ export class ContentManagementService {
     return this.homePageContentSubject.asObservable();
   }
   
-  async updateHomePageContent(content: HomePageContent): Promise<void> {
+  updateHomePageContent(content: HomePageContent): void {
     this.homePageContentSubject.next(content);
     if (this.isBrowser) {
-      try {
-        await this.firebaseService.updateHomePageContent(content);
-        localStorage.setItem('homePageContent', JSON.stringify(content));
-      } catch (error) {
-        console.error('Failed to update home page content in Firebase:', error);
-        // Fallback to localStorage
-        localStorage.setItem('homePageContent', JSON.stringify(content));
-      }
+      localStorage.setItem('homePageContent', JSON.stringify(content));
     }
   }
   
@@ -149,17 +192,10 @@ export class ContentManagementService {
     return this.aboutPageContentSubject.asObservable();
   }
   
-  async updateAboutPageContent(content: AboutPageContent): Promise<void> {
+  updateAboutPageContent(content: AboutPageContent): void {
     this.aboutPageContentSubject.next(content);
     if (this.isBrowser) {
-      try {
-        await this.firebaseService.updateAboutPageContent(content);
-        localStorage.setItem('aboutPageContent', JSON.stringify(content));
-      } catch (error) {
-        console.error('Failed to update about page content in Firebase:', error);
-        // Fallback to localStorage
-        localStorage.setItem('aboutPageContent', JSON.stringify(content));
-      }
+      localStorage.setItem('aboutPageContent', JSON.stringify(content));
     }
   }
   
@@ -168,24 +204,17 @@ export class ContentManagementService {
     return this.contactPageContentSubject.asObservable();
   }
   
-  async updateContactPageContent(content: ContactPageContent): Promise<void> {
+  updateContactPageContent(content: ContactPageContent): void {
     this.contactPageContentSubject.next(content);
     if (this.isBrowser) {
-      try {
-        await this.firebaseService.updateContactPageContent(content);
-        localStorage.setItem('contactPageContent', JSON.stringify(content));
-      } catch (error) {
-        console.error('Failed to update contact page content in Firebase:', error);
-        // Fallback to localStorage
-        localStorage.setItem('contactPageContent', JSON.stringify(content));
-      }
+      localStorage.setItem('contactPageContent', JSON.stringify(content));
     }
   }
   
   // Reset to default content
-  async resetToDefault(): Promise<void> {
-    await this.updateHomePageContent(this.defaultHomePageContent);
-    await this.updateAboutPageContent(this.defaultAboutPageContent);
-    await this.updateContactPageContent(this.defaultContactPageContent);
+  resetToDefault(): void {
+    this.updateHomePageContent(this.defaultHomePageContent);
+    this.updateAboutPageContent(this.defaultAboutPageContent);
+    this.updateContactPageContent(this.defaultContactPageContent);
   }
 }

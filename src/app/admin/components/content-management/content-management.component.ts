@@ -2,7 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ContentManagementService, HomePageContent, AboutPageContent, ContactPageContent, SocialLink } from '../../services/content-management.service';
+import { 
+  ContentManagementService, 
+  HomePageContent, 
+  AboutPageContent, 
+  ContactPageContent, 
+  SocialLink,
+  ApiIntegration,
+  AgentJob,
+  DashboardProject
+} from '../../services/content-management.service';
 
 @Component({
   selector: 'app-content-management',
@@ -20,7 +29,11 @@ export class ContentManagementComponent implements OnInit {
 
   aboutPageContent: AboutPageContent = {
     title: '',
-    content: '',
+    developerBackground: '',
+    healthcareExperience: '',
+    apiIntegrations: [],
+    agentJobs: [],
+    dashboardProjects: [],
     imageUrl: ''
   };
 
@@ -38,6 +51,21 @@ export class ContentManagementComponent implements OnInit {
     icon: ''
   };
 
+  newApiIntegration: ApiIntegration = {
+    name: '',
+    description: ''
+  };
+
+  newAgentJob: AgentJob = {
+    name: '',
+    description: ''
+  };
+
+  newDashboardProject: DashboardProject = {
+    name: '',
+    description: ''
+  };
+
   activeTab: string = 'home';
 
   constructor(private contentService: ContentManagementService) {}
@@ -53,6 +81,10 @@ export class ContentManagementComponent implements OnInit {
 
     this.contentService.getAboutPageContent().subscribe(content => {
       this.aboutPageContent = {...content};
+      // Initialize arrays if they don't exist
+      if (!this.aboutPageContent.apiIntegrations) this.aboutPageContent.apiIntegrations = [];
+      if (!this.aboutPageContent.agentJobs) this.aboutPageContent.agentJobs = [];
+      if (!this.aboutPageContent.dashboardProjects) this.aboutPageContent.dashboardProjects = [];
     });
 
     this.contentService.getContactPageContent().subscribe(content => {
@@ -84,6 +116,39 @@ export class ContentManagementComponent implements OnInit {
 
   removeSocialLink(index: number): void {
     this.contactPageContent.socialLinks.splice(index, 1);
+  }
+
+  addApiIntegration(): void {
+    if (this.newApiIntegration.name && this.newApiIntegration.description) {
+      this.aboutPageContent.apiIntegrations.push({...this.newApiIntegration});
+      this.newApiIntegration = { name: '', description: '' };
+    }
+  }
+
+  removeApiIntegration(index: number): void {
+    this.aboutPageContent.apiIntegrations.splice(index, 1);
+  }
+
+  addAgentJob(): void {
+    if (this.newAgentJob.name && this.newAgentJob.description) {
+      this.aboutPageContent.agentJobs.push({...this.newAgentJob});
+      this.newAgentJob = { name: '', description: '' };
+    }
+  }
+
+  removeAgentJob(index: number): void {
+    this.aboutPageContent.agentJobs.splice(index, 1);
+  }
+
+  addDashboardProject(): void {
+    if (this.newDashboardProject.name && this.newDashboardProject.description) {
+      this.aboutPageContent.dashboardProjects.push({...this.newDashboardProject});
+      this.newDashboardProject = { name: '', description: '' };
+    }
+  }
+
+  removeDashboardProject(index: number): void {
+    this.aboutPageContent.dashboardProjects.splice(index, 1);
   }
 
   setActiveTab(tab: string): void {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnimationService } from '../../services/animation.service';
 import { SeoService } from '../../services/seo.service';
+import { ContentManagementService, AboutPageContent } from '../../admin/services/content-management.service';
 
 @Component({
   selector: 'app-about',
@@ -77,10 +78,21 @@ export class AboutComponent implements OnInit {
       description: 'Hasta memnuniyeti metriklerinin takibi'
     }
   ];
-  
+
+  aboutPageContent: AboutPageContent = {
+    title: 'Hakkımda',
+    developerBackground: '',
+    healthcareExperience: '',
+    apiIntegrations: [],
+    agentJobs: [],
+    dashboardProjects: [],
+    imageUrl: ''
+  };
+
   constructor(
     private animationService: AnimationService,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private contentService: ContentManagementService
   ) {}
   
   ngOnInit() {
@@ -91,6 +103,11 @@ export class AboutComponent implements OnInit {
       'yazılım geliştirici, C#, .NET, Angular, sağlık sistemleri, deneyim',
       'assets/images/about-preview.jpg'
     );
+    
+    // Load content from service
+    this.contentService.getAboutPageContent().subscribe(content => {
+      this.aboutPageContent = {...content};
+    });
     
     // Initialize animations after view loads
     setTimeout(() => {
