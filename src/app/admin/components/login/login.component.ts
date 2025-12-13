@@ -28,9 +28,9 @@ export class AdminLoginComponent implements OnInit {
     }
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.username && this.password) {
-      const success = this.authService.login(this.username, this.password);
+      const success = await this.authService.login(this.username, this.password);
       if (success) {
         this.router.navigate(['/admin/dashboard']);
       } else {
