@@ -1,51 +1,34 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { 
+  HeroSettings, 
+  AboutSection, 
+  ContactSection, 
+  FooterSection, 
+  ApiIntegration, 
+  AgentJob, 
+  DashboardProject, 
+  SocialLink,
+  SiteSettings,
+  SkillsSection,
+  ProjectsSection
+} from '../models/content-models';
 
-export interface HomePageContent {
-  heroTitle: string;
-  heroSubtitle: string;
-  shortBio: string;
-}
-
-export interface AboutPageContent {
-  title: string;
-  developerBackground: string;
-  healthcareExperience: string;
-  apiIntegrations: ApiIntegration[];
-  agentJobs: AgentJob[];
-  dashboardProjects: DashboardProject[];
-  imageUrl: string;
-}
-
-export interface ApiIntegration {
-  name: string;
-  description: string;
-}
-
-export interface AgentJob {
-  name: string;
-  description: string;
-}
-
-export interface DashboardProject {
-  name: string;
-  description: string;
-}
-
-export interface ContactPageContent {
-  title: string;
-  email: string;
-  phone: string;
-  address: string;
-  socialLinks: SocialLink[];
-}
-
-export interface SocialLink {
-  name: string;
-  url: string;
-  icon: string;
-}
+// Export all interfaces for use in components
+export type { 
+  HeroSettings, 
+  AboutSection, 
+  ContactSection, 
+  FooterSection, 
+  ApiIntegration, 
+  AgentJob, 
+  DashboardProject, 
+  SocialLink,
+  SiteSettings,
+  SkillsSection,
+  ProjectsSection
+};
 
 @Injectable({
   providedIn: 'root'
@@ -53,97 +36,177 @@ export interface SocialLink {
 export class ContentManagementService {
   private isBrowser: boolean;
   
-  // Default content
-  private defaultHomePageContent: HomePageContent = {
-    heroTitle: 'Merhaba, Ben Bir Yazılım Geliştiricisiyim',
-    heroSubtitle: 'C#, .NET, Angular ve Sağlık Sistemleri alanında uzmanlaşmış bir geliştirici olarak, kullanıcı odaklı çözümler üretiyorum.',
-    shortBio: 'Yaklaşık 5 yıldır yazılım geliştirme alanında çalışan bir profesyonel olarak, özellikle sağlık sektöründe entegre sistemler üzerine yoğunlaştım. Geliştirdiğim çözümlerle hastanelerde verimliliği artırmayı ve hasta deneyimini iyileştirmeyi hedefliyorum.'
+  // Default content with structured models
+  private defaultSiteSettings: SiteSettings = {
+    theme: {
+      primaryColor: '#00c3ff',
+      backgroundColor: '#0a0a0a',
+      textColor: '#ffffff',
+      darkMode: true
+    },
+    hero: {
+      title: 'Merhaba, Ben Bir Yazılım Geliştiricisiyim',
+      subtitle: 'C#, .NET, Angular ve Sağlık Sistemleri alanında uzmanlaşmış bir geliştirici olarak, kullanıcı odaklı çözümler üretiyorum.',
+      ctaText: 'Projelerime Göz Atın',
+      ctaLink: '/projects',
+      isActive: true
+    },
+    about: {
+      title: 'Hakkımda',
+      developerBackgroundTitle: 'Geliştirici Geçmişim',
+      developerBackground: 'Yazılım geliştirmesine 5 yıl önce başladım ve o zamandan beri sürekli öğrenmeye ve kendimi geliştirmeye devam ediyorum. Başlangıçta C# ve .NET teknolojileriyle masaüstü uygulamalar geliştirerek kariyerime başladım. Zamanla web teknolojilerine yönelerek Angular ile frontend geliştirme konusunda da uzmanlaştım. Özellikle sağlık sektöründe çalışmak beni çok ilgilendiriyor çünkü bu alanda geliştirdiğim çözümler doğrudan insan hayatına dokunuyor ve fark yaratıyor.',
+      healthcareExperienceTitle: 'Sağlık Sistemleri Deneyimim',
+      healthcareExperience: 'Sağlık sektöründe 3 yıldır aktif olarak çalışıyorum ve bu süreçte hastanelerde kullanılan çeşitli sistemlerin entegrasyonu ve iyileştirilmesi üzerine projelerde yer aldım. Bu projeler arasında: Hasta takip sistemleri, Oda durumu monitörleri, Radyoloji istek ve raporlama sistemleri, Ameliyathane planlama sistemleri, Fatura ve muayene entegrasyonları',
+      apiIntegrationsTitle: 'API Entegrasyonları',
+      apiIntegrations: [
+        {
+          id: 1,
+          name: 'MHRS Entegrasyonu',
+          description: 'Merkezi Hekim Randevu Sistemi ile entegrasyon',
+          isActive: true
+        },
+        {
+          id: 2,
+          name: 'E-Nabız Entegrasyonu',
+          description: 'Ulusal elektronik sağlık kayıt sistemine bağlanma',
+          isActive: true
+        },
+        {
+          id: 3,
+          name: 'Medula Entegrasyonu',
+          description: 'Sosyal Güvenlik Kurumu faturalama sistemi',
+          isActive: true
+        }
+      ],
+      agentJobsTitle: 'Arka Plan İşleri',
+      agentJobs: [
+        {
+          id: 1,
+          name: 'Veri Senkronizasyonu',
+          description: 'Farklı sistemler arasında veri aktarımı',
+          isActive: true
+        },
+        {
+          id: 2,
+          name: 'Rapor Oluşturma',
+          description: 'Otomatik rapor oluşturma ve dağıtımı',
+          isActive: true
+        },
+        {
+          id: 3,
+          name: 'Bildirim Sistemleri',
+          description: 'SMS ve e-posta bildirimleri',
+          isActive: true
+        }
+      ],
+      dashboardProjectsTitle: 'Gösterge Tabloları',
+      dashboardProjects: [
+        {
+          id: 1,
+          name: 'Hastane Yönetim Paneli',
+          description: 'Hastane personeli için merkezi yönetim paneli',
+          isActive: true
+        },
+        {
+          id: 2,
+          name: 'Doktor Performans Gösterge Tablosu',
+          description: 'Doktorların performans metriklerinin görselleştirilmesi',
+          isActive: true
+        },
+        {
+          id: 3,
+          name: 'Hasta Memnuniyeti İzleme',
+          description: 'Hasta memnuniyeti metriklerinin takibi',
+          isActive: true
+        }
+      ],
+      imageUrl: 'assets/images/profile.jpg',
+      isActive: true
+    },
+    skills: {
+      title: 'Yeteneklerim',
+      certificatesTitle: 'Sertifikalarım',
+      isActive: true
+    },
+    projects: {
+      title: 'Projelerim',
+      isActive: true
+    },
+    contact: {
+      title: 'İletişim',
+      contactFormTitle: 'Bana Ulaşın',
+      contactInfoTitle: 'İletişim Bilgilerim',
+      socialMediaTitle: 'Sosyal Medya',
+      downloadCvTitle: 'CV\'mi İndirin',
+      emailLabel: 'E-posta',
+      phoneLabel: 'Telefon',
+      addressLabel: 'Adres',
+      namePlaceholder: 'Adınız',
+      emailPlaceholder: 'E-posta Adresiniz',
+      subjectPlaceholder: 'Konu',
+      messagePlaceholder: 'Mesajınız',
+      sendMessageButton: 'Mesaj Gönder',
+      email: 'email@example.com',
+      phone: '+90 555 555 55 55',
+      address: 'İstanbul, Türkiye',
+      socialLinks: [
+        { 
+          id: 1,
+          name: 'LinkedIn', 
+          url: '#', 
+          icon: 'fab fa-linkedin',
+          isActive: true
+        },
+        { 
+          id: 2,
+          name: 'GitHub', 
+          url: '#', 
+          icon: 'fab fa-github',
+          isActive: true
+        },
+        { 
+          id: 3,
+          name: 'Twitter', 
+          url: '#', 
+          icon: 'fab fa-twitter',
+          isActive: true
+        }
+      ],
+      isActive: true
+    },
+    footer: {
+      copyrightText: '© 2023 Tüm hakları saklıdır.',
+      socialLinks: [
+        { 
+          id: 1,
+          name: 'LinkedIn', 
+          url: '#', 
+          icon: 'fab fa-linkedin',
+          isActive: true
+        },
+        { 
+          id: 2,
+          name: 'GitHub', 
+          url: '#', 
+          icon: 'fab fa-github',
+          isActive: true
+        },
+        { 
+          id: 3,
+          name: 'Twitter', 
+          url: '#', 
+          icon: 'fab fa-twitter',
+          isActive: true
+        }
+      ],
+      isActive: true
+    },
+    isActive: true
   };
-  
-  private defaultAboutPageContent: AboutPageContent = {
-    title: 'Hakkımda',
-    developerBackground: `
-    <p>Yazılım geliştirmesine 5 yıl önce başladım ve o zamandan beri sürekli öğrenmeye ve kendimi geliştirmeye devam ediyorum. 
-    Başlangıçta C# ve .NET teknolojileriyle masaüstü uygulamalar geliştirerek kariyerime başladım.</p>
-    
-    <p>Zamanla web teknolojilerine yönelerek Angular ile frontend geliştirme konusunda da uzmanlaştım. 
-    Özellikle sağlık sektöründe çalışmak beni çok ilgilendiriyor çünkü bu alanda geliştirdiğim çözümler 
-    doğrudan insan hayatına dokunuyor ve fark yaratıyor.</p>
-  `,
-    healthcareExperience: `
-    <p>Sağlık sektöründe 3 yıldır aktif olarak çalışıyorum ve bu süreçte hastanelerde kullanılan çeşitli sistemlerin 
-    entegrasyonu ve iyileştirilmesi üzerine projelerde yer aldım. Bu projeler arasında:</p>
-    
-    <ul class="list-disc pl-6 mt-4 space-y-2">
-      <li>Hasta takip sistemleri</li>
-      <li>Oda durumu monitörleri</li>
-      <li>Radyoloji istek ve raporlama sistemleri</li>
-      <li>Ameliyathane planlama sistemleri</li>
-      <li>Fatura ve muayene entegrasyonları</li>
-    </ul>
-  `,
-    apiIntegrations: [
-      {
-        name: 'MHRS Entegrasyonu',
-        description: 'Merkezi Hekim Randevu Sistemi ile entegrasyon'
-      },
-      {
-        name: 'E-Nabız Entegrasyonu',
-        description: 'Ulusal elektronik sağlık kayıt sistemine bağlanma'
-      },
-      {
-        name: 'Medula Entegrasyonu',
-        description: 'Sosyal Güvenlik Kurumu faturalama sistemi'
-      }
-    ],
-    agentJobs: [
-      {
-        name: 'Veri Senkronizasyonu',
-        description: 'Farklı sistemler arasında veri aktarımı'
-      },
-      {
-        name: 'Rapor Oluşturma',
-        description: 'Otomatik rapor oluşturma ve dağıtımı'
-      },
-      {
-        name: 'Bildirim Sistemleri',
-        description: 'SMS ve e-posta bildirimleri'
-      }
-    ],
-    dashboardProjects: [
-      {
-        name: 'Hastane Yönetim Paneli',
-        description: 'Hastane personeli için merkezi yönetim paneli'
-      },
-      {
-        name: 'Doktor Performans Gösterge Tablosu',
-        description: 'Doktorların performans metriklerinin görselleştirilmesi'
-      },
-      {
-        name: 'Hasta Memnuniyeti İzleme',
-        description: 'Hasta memnuniyeti metriklerinin takibi'
-      }
-    ],
-    imageUrl: 'assets/images/profile.jpg'
-  };
-  
-  private defaultContactPageContent: ContactPageContent = {
-    title: 'İletişim',
-    email: 'email@example.com',
-    phone: '+90 555 555 55 55',
-    address: 'İstanbul, Türkiye',
-    socialLinks: [
-      { name: 'LinkedIn', url: '#', icon: 'fab fa-linkedin' },
-      { name: 'GitHub', url: '#', icon: 'fab fa-github' },
-      { name: 'Twitter', url: '#', icon: 'fab fa-twitter' }
-    ]
-  };
-  
+
   // BehaviorSubjects for reactive content updates
-  private homePageContentSubject = new BehaviorSubject<HomePageContent>(this.defaultHomePageContent);
-  private aboutPageContentSubject = new BehaviorSubject<AboutPageContent>(this.defaultAboutPageContent);
-  private contactPageContentSubject = new BehaviorSubject<ContactPageContent>(this.defaultContactPageContent);
-  
+  private siteSettingsSubject = new BehaviorSubject<SiteSettings>(this.defaultSiteSettings);
+
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
     
@@ -155,66 +218,30 @@ export class ContentManagementService {
   
   private loadContentFromStorage(): void {
     try {
-      const storedHomePageContent = localStorage.getItem('homePageContent');
-      const storedAboutPageContent = localStorage.getItem('aboutPageContent');
-      const storedContactPageContent = localStorage.getItem('contactPageContent');
+      const storedSiteSettings = localStorage.getItem('siteSettings');
       
-      if (storedHomePageContent) {
-        this.homePageContentSubject.next(JSON.parse(storedHomePageContent));
-      }
-      
-      if (storedAboutPageContent) {
-        this.aboutPageContentSubject.next(JSON.parse(storedAboutPageContent));
-      }
-      
-      if (storedContactPageContent) {
-        this.contactPageContentSubject.next(JSON.parse(storedContactPageContent));
+      if (storedSiteSettings) {
+        this.siteSettingsSubject.next(JSON.parse(storedSiteSettings));
       }
     } catch (e) {
       console.warn('Failed to load content from localStorage');
     }
   }
   
-  // Home page content methods
-  getHomePageContent(): Observable<HomePageContent> {
-    return this.homePageContentSubject.asObservable();
+  // Site settings methods
+  getSiteSettings(): Observable<SiteSettings> {
+    return this.siteSettingsSubject.asObservable();
   }
   
-  updateHomePageContent(content: HomePageContent): void {
-    this.homePageContentSubject.next(content);
+  updateSiteSettings(settings: SiteSettings): void {
+    this.siteSettingsSubject.next(settings);
     if (this.isBrowser) {
-      localStorage.setItem('homePageContent', JSON.stringify(content));
-    }
-  }
-  
-  // About page content methods
-  getAboutPageContent(): Observable<AboutPageContent> {
-    return this.aboutPageContentSubject.asObservable();
-  }
-  
-  updateAboutPageContent(content: AboutPageContent): void {
-    this.aboutPageContentSubject.next(content);
-    if (this.isBrowser) {
-      localStorage.setItem('aboutPageContent', JSON.stringify(content));
-    }
-  }
-  
-  // Contact page content methods
-  getContactPageContent(): Observable<ContactPageContent> {
-    return this.contactPageContentSubject.asObservable();
-  }
-  
-  updateContactPageContent(content: ContactPageContent): void {
-    this.contactPageContentSubject.next(content);
-    if (this.isBrowser) {
-      localStorage.setItem('contactPageContent', JSON.stringify(content));
+      localStorage.setItem('siteSettings', JSON.stringify(settings));
     }
   }
   
   // Reset to default content
   resetToDefault(): void {
-    this.updateHomePageContent(this.defaultHomePageContent);
-    this.updateAboutPageContent(this.defaultAboutPageContent);
-    this.updateContactPageContent(this.defaultContactPageContent);
+    this.updateSiteSettings(this.defaultSiteSettings);
   }
 }

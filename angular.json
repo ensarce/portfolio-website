@@ -131,6 +131,15 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/portfolio-website/",
+            "repo": "https://github.com/ensarkaplan/portfolio-website.git",
+            "name": "Ensar Kaplan",
+            "email": "ensarkaplan@example.com"
+          }
         }
       }
     }

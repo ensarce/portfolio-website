@@ -1,14 +1,14 @@
 <div class="min-h-screen bg-dark-gray text-white pt-20">
   <div class="max-w-6xl mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold text-center mb-16 text-neon-blue scroll-animation">İletişim</h1>
+    <h1 *ngIf="siteSettings.contact.isActive" class="text-4xl font-bold text-center mb-16 text-neon-blue scroll-animation">{{ siteSettings.contact.title }}</h1>
     
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <!-- Contact Form -->
-      <div class="glass-effect rounded-2xl p-8 scroll-animation">
-        <h2 class="text-2xl font-bold mb-6 text-purple-300">Bana Ulaşın</h2>
+      <div *ngIf="siteSettings.contact.isActive" class="glass-effect rounded-2xl p-8 scroll-animation">
+        <h2 class="text-2xl font-bold mb-6 text-purple-300">{{ siteSettings.contact.contactFormTitle }}</h2>
         <form (ngSubmit)="submitForm()" #contactForm="ngForm">
           <div class="mb-6">
-            <label for="name" class="block text-gray-300 mb-2">Adınız</label>
+            <label for="name" class="block text-gray-300 mb-2">{{ siteSettings.contact.namePlaceholder }}</label>
             <input 
               type="text" 
               id="name" 
@@ -20,7 +20,7 @@
           </div>
           
           <div class="mb-6">
-            <label for="email" class="block text-gray-300 mb-2">E-posta Adresiniz</label>
+            <label for="email" class="block text-gray-300 mb-2">{{ siteSettings.contact.emailPlaceholder }}</label>
             <input 
               type="email" 
               id="email" 
@@ -32,7 +32,7 @@
           </div>
           
           <div class="mb-6">
-            <label for="subject" class="block text-gray-300 mb-2">Konu</label>
+            <label for="subject" class="block text-gray-300 mb-2">{{ siteSettings.contact.subjectPlaceholder }}</label>
             <input 
               type="text" 
               id="subject" 
@@ -44,7 +44,7 @@
           </div>
           
           <div class="mb-6">
-            <label for="message" class="block text-gray-300 mb-2">Mesajınız</label>
+            <label for="message" class="block text-gray-300 mb-2">{{ siteSettings.contact.messagePlaceholder }}</label>
             <textarea 
               id="message" 
               name="message" 
@@ -59,15 +59,15 @@
             type="submit" 
             class="w-full bg-gradient-to-r from-purple-600 to-neon-blue text-dark-gray font-bold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-neon-blue transition duration-300 transform hover:scale-105"
           >
-            Mesaj Gönder
+            {{ siteSettings.contact.sendMessageButton }}
           </button>
         </form>
       </div>
       
       <!-- Contact Information -->
-      <div class="scroll-animation">
+      <div *ngIf="siteSettings.contact.isActive" class="scroll-animation">
         <div class="glass-effect rounded-2xl p-8 mb-8">
-          <h2 class="text-2xl font-bold mb-6 text-purple-300">İletişim Bilgilerim</h2>
+          <h2 class="text-2xl font-bold mb-6 text-purple-300">{{ siteSettings.contact.contactInfoTitle }}</h2>
           <p class="text-gray-300 mb-8">
             Herhangi bir proje teklifi veya işbirliği için aşağıdaki formu doldurabilir ya da 
             sosyal medya hesaplarımdan bana ulaşabilirsiniz.
@@ -81,8 +81,8 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-neon-blue">E-posta</h3>
-                <p class="text-gray-300">youremail&#64;example.com</p>
+                <h3 class="text-lg font-semibold text-neon-blue">{{ siteSettings.contact.emailLabel }}</h3>
+                <p class="text-gray-300">{{ siteSettings.contact.email }}</p>
               </div>
             </div>
             
@@ -93,29 +93,44 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-neon-blue">Telefon</h3>
-                <p class="text-gray-300">+90 (555) 123 45 67</p>
+                <h3 class="text-lg font-semibold text-neon-blue">{{ siteSettings.contact.phoneLabel }}</h3>
+                <p class="text-gray-300">{{ siteSettings.contact.phone }}</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="bg-purple-600 p-3 rounded-lg mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-neon-blue">{{ siteSettings.contact.addressLabel }}</h3>
+                <p class="text-gray-300">{{ siteSettings.contact.address }}</p>
               </div>
             </div>
           </div>
         </div>
         
         <!-- Social Links -->
-        <div class="glass-effect rounded-2xl p-8">
-          <h2 class="text-2xl font-bold mb-6 text-purple-300">Sosyal Medya</h2>
+        <div *ngIf="siteSettings.contact.socialLinks && siteSettings.contact.socialLinks.length > 0" class="glass-effect rounded-2xl p-8">
+          <h2 class="text-2xl font-bold mb-6 text-purple-300">{{ siteSettings.contact.socialMediaTitle }}</h2>
           <div class="flex space-x-6">
-            <a 
-              *ngFor="let link of socialLinks" 
-              [href]="link.url" 
-              target="_blank"
-              class="bg-gray-800 p-4 rounded-full hover:bg-neon-blue transition duration-300 transform hover:scale-110 hover-card"
-            >
-              <div class="w-6 h-6 bg-gray-400 rounded-full"></div>
-            </a>
+            <ng-container *ngFor="let link of siteSettings.contact.socialLinks">
+              <a 
+                *ngIf="link.isActive"
+                [href]="link.url" 
+                target="_blank"
+                class="bg-gray-800 p-4 rounded-full hover:bg-neon-blue transition duration-300 transform hover:scale-110 hover-card"
+              >
+                <i [class]="link.icon" class="text-xl"></i>
+              </a>
+            </ng-container>
           </div>
           
           <div class="mt-8">
-            <h3 class="text-lg font-semibold mb-4 text-neon-blue">CV'mi İndirin</h3>
+            <h3 class="text-lg font-semibold mb-4 text-neon-blue">{{ siteSettings.contact.downloadCvTitle }}</h3>
             <button class="flex items-center bg-gray-800 hover:bg-purple-600 py-3 px-6 rounded-lg transition duration-300 hover-card">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

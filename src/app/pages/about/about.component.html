@@ -1,58 +1,55 @@
 <div class="min-h-screen bg-dark-gray text-white pt-20">
   <div class="max-w-6xl mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold text-center mb-16 text-neon-blue scroll-animation">{{ aboutPageContent.title }}</h1>
+    <h1 *ngIf="siteSettings.about.isActive" class="text-4xl font-bold text-center mb-16 text-neon-blue scroll-animation">{{ siteSettings.about.title }}</h1>
     
     <!-- Developer Background -->
-    <section class="mb-16 glass-effect rounded-2xl p-8 scroll-animation">
-      <h2 class="text-2xl font-bold mb-6 text-purple-300">Geliştirici Geçmişim</h2>
-      <div [innerHTML]="aboutPageContent.developerBackground" class="prose prose-invert max-w-none"></div>
+    <section *ngIf="siteSettings.about.isActive && siteSettings.about.developerBackground" class="mb-16 glass-effect rounded-2xl p-8 scroll-animation">
+      <h2 class="text-2xl font-bold mb-6 text-purple-300">{{ siteSettings.about.developerBackgroundTitle }}</h2>
+      <div [innerHTML]="siteSettings.about.developerBackground" class="prose prose-invert max-w-none"></div>
     </section>
     
     <!-- Healthcare Experience -->
-    <section class="mb-16 glass-effect rounded-2xl p-8 scroll-animation">
-      <h2 class="text-2xl font-bold mb-6 text-purple-300">Sağlık Sistemleri Deneyimim</h2>
-      <div [innerHTML]="aboutPageContent.healthcareExperience" class="prose prose-invert max-w-none"></div>
+    <section *ngIf="siteSettings.about.isActive && siteSettings.about.healthcareExperience" class="mb-16 glass-effect rounded-2xl p-8 scroll-animation">
+      <h2 class="text-2xl font-bold mb-6 text-purple-300">{{ siteSettings.about.healthcareExperienceTitle }}</h2>
+      <div [innerHTML]="siteSettings.about.healthcareExperience" class="prose prose-invert max-w-none"></div>
     </section>
     
     <!-- API Integrations -->
-    <section class="mb-16 scroll-animation">
-      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">API Entegrasyonları</h2>
+    <section *ngIf="siteSettings.about.isActive && siteSettings.about.apiIntegrations && siteSettings.about.apiIntegrations.length > 0" class="mb-16 scroll-animation">
+      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">{{ siteSettings.about.apiIntegrationsTitle }}</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div 
-          *ngFor="let integration of aboutPageContent.apiIntegrations" 
-          class="glass-effect rounded-xl p-6 hover-card"
-        >
-          <h3 class="text-xl font-bold mb-3 text-purple-300">{{ integration.name }}</h3>
-          <p class="text-gray-300">{{ integration.description }}</p>
-        </div>
+        <ng-container *ngFor="let integration of siteSettings.about.apiIntegrations">
+          <div *ngIf="integration.isActive" class="glass-effect rounded-xl p-6 hover-card">
+            <h3 class="text-xl font-bold mb-3 text-purple-300">{{ integration.name }}</h3>
+            <p class="text-gray-300">{{ integration.description }}</p>
+          </div>
+        </ng-container>
       </div>
     </section>
     
     <!-- Agent Jobs -->
-    <section class="mb-16 scroll-animation">
-      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">Arka Plan İşleri</h2>
+    <section *ngIf="siteSettings.about.isActive && siteSettings.about.agentJobs && siteSettings.about.agentJobs.length > 0" class="mb-16 scroll-animation">
+      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">{{ siteSettings.about.agentJobsTitle }}</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div 
-          *ngFor="let job of aboutPageContent.agentJobs" 
-          class="glass-effect rounded-xl p-6 hover-card"
-        >
-          <h3 class="text-xl font-bold mb-3 text-purple-300">{{ job.name }}</h3>
-          <p class="text-gray-300">{{ job.description }}</p>
-        </div>
+        <ng-container *ngFor="let job of siteSettings.about.agentJobs">
+          <div *ngIf="job.isActive" class="glass-effect rounded-xl p-6 hover-card">
+            <h3 class="text-xl font-bold mb-3 text-purple-300">{{ job.name }}</h3>
+            <p class="text-gray-300">{{ job.description }}</p>
+          </div>
+        </ng-container>
       </div>
     </section>
     
     <!-- Dashboard Projects -->
-    <section class="scroll-animation">
-      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">Gösterge Tabloları</h2>
+    <section *ngIf="siteSettings.about.isActive && siteSettings.about.dashboardProjects && siteSettings.about.dashboardProjects.length > 0" class="scroll-animation">
+      <h2 class="text-2xl font-bold mb-8 text-center text-neon-blue">{{ siteSettings.about.dashboardProjectsTitle }}</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div 
-          *ngFor="let project of aboutPageContent.dashboardProjects" 
-          class="glass-effect rounded-xl p-6 hover-card"
-        >
-          <h3 class="text-xl font-bold mb-3 text-purple-300">{{ project.name }}</h3>
-          <p class="text-gray-300">{{ project.description }}</p>
-        </div>
+        <ng-container *ngFor="let project of siteSettings.about.dashboardProjects">
+          <div *ngIf="project.isActive" class="glass-effect rounded-xl p-6 hover-card">
+            <h3 class="text-xl font-bold mb-3 text-purple-300">{{ project.name }}</h3>
+            <p class="text-gray-300">{{ project.description }}</p>
+          </div>
+        </ng-container>
       </div>
     </section>
   </div>

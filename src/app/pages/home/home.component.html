@@ -1,54 +1,46 @@
 <div class="min-h-screen bg-dark-gray text-white">
   <!-- Hero Section -->
-  <section class="py-20 px-4 text-center scroll-animation">
+  <section *ngIf="siteSettings.hero.isActive" class="py-20 px-4 text-center scroll-animation">
     <div class="max-w-4xl mx-auto">
       <div class="mb-6">
         <i class="fas fa-laptop-code text-6xl text-neon-blue"></i>
       </div>
-      <h1 class="text-4xl md:text-6xl font-bold mb-6 text-neon-blue">{{ homePageContent.heroTitle }}</h1>
-      <p class="text-xl md:text-2xl mb-8 text-purple-300">{{ homePageContent.heroSubtitle }}</p>
+      <h1 class="text-4xl md:text-6xl font-bold mb-6 text-neon-blue">{{ siteSettings.hero.title }}</h1>
+      <p class="text-xl md:text-2xl mb-8 text-purple-300">{{ siteSettings.hero.subtitle }}</p>
       <button (click)="navigateToProjects()" class="bg-neon-blue text-dark-gray font-bold py-3 px-8 rounded-full text-lg hover:bg-purple-500 transition duration-300 transform hover:scale-105">
-        Projelerime Göz Atın
+        {{ siteSettings.hero.ctaText }}
       </button>
     </div>
   </section>
 
-  <!-- Short Bio Section -->
-  <section class="py-16 px-4 bg-gray-900 scroll-animation">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold mb-8 text-center text-neon-blue">
-        <i class="fas fa-user mr-2"></i>Hakkımda
-      </h2>
-      <p class="text-lg leading-relaxed text-gray-300">{{ homePageContent.shortBio }}</p>
-    </div>
-  </section>
-
   <!-- Technology Stack Section -->
-  <section class="py-16 px-4 scroll-animation">
+  <section *ngIf="technologies && technologies.length > 0" class="py-16 px-4 scroll-animation">
     <div class="max-w-6xl mx-auto">
       <h2 class="text-3xl font-bold mb-12 text-center text-neon-blue">
         <i class="fas fa-toolbox mr-2"></i>Teknoloji Yığınım
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div *ngFor="let tech of technologies" class="bg-gray-800 p-6 rounded-xl shadow-lg hover-card">
-          <div class="flex items-center mb-3">
-            <i [class]="tech.icon" class="text-neon-blue text-2xl mr-3"></i>
-            <h3 class="text-xl font-semibold text-purple-300">{{ tech.name }}</h3>
+        <div *ngFor="let category of technologies" class="bg-gray-800 p-6 rounded-xl shadow-lg hover-card">
+          <h3 class="text-xl font-semibold text-purple-300 mb-4">{{ category.category }}</h3>
+          <div *ngFor="let skill of category.items" class="mb-3">
+            <div class="flex items-center mb-1">
+              <span class="text-gray-300 flex-grow">{{ skill.name }}</span>
+              <span class="text-gray-400 text-sm">{{ skill.level }}%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div 
+                class="bg-neon-blue h-2 rounded-full" 
+                [style.width.%]="skill.level"
+              ></div>
+            </div>
           </div>
-          <div class="w-full bg-gray-700 rounded-full h-4">
-            <div 
-              class="bg-neon-blue h-4 rounded-full" 
-              [style.width.%]="tech.level"
-            ></div>
-          </div>
-          <p class="mt-2 text-right text-gray-400">{{ tech.level }}%</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Featured Projects Section -->
-  <section class="py-16 px-4 bg-gray-900 scroll-animation">
+  <section *ngIf="featuredProjects && featuredProjects.length > 0" class="py-16 px-4 bg-gray-900 scroll-animation">
     <div class="max-w-6xl mx-auto">
       <h2 class="text-3xl font-bold mb-12 text-center text-neon-blue">
         <i class="fas fa-star mr-2"></i>Öne Çıkan Projeler
@@ -76,7 +68,7 @@
   </section>
 
   <!-- Call to Action Section -->
-  <section class="py-20 px-4 text-center scroll-animation">
+  <section *ngIf="siteSettings.contact.isActive" class="py-20 px-4 text-center scroll-animation">
     <div class="max-w-3xl mx-auto">
       <div class="mb-6">
         <i class="fas fa-hands-helping text-5xl text-neon-blue"></i>

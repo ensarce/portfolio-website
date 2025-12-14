@@ -4,14 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { 
   ContentManagementService, 
-  HomePageContent, 
-  AboutPageContent, 
-  ContactPageContent, 
-  SocialLink,
-  ApiIntegration,
-  AgentJob,
-  DashboardProject
+  SiteSettings
 } from '../../services/content-management.service';
+import { 
+  HeroSettings, 
+  AboutSection, 
+  ContactSection, 
+  FooterSection, 
+  ApiIntegration, 
+  AgentJob, 
+  DashboardProject, 
+  SocialLink,
+  SkillsSection,
+  ProjectsSection
+} from '../../models/content-models';
 
 @Component({
   selector: 'app-content-management',
@@ -21,49 +27,99 @@ import {
   styleUrls: ['./content-management.component.scss']
 })
 export class ContentManagementComponent implements OnInit {
-  homePageContent: HomePageContent = {
-    heroTitle: '',
-    heroSubtitle: '',
-    shortBio: ''
-  };
-
-  aboutPageContent: AboutPageContent = {
-    title: '',
-    developerBackground: '',
-    healthcareExperience: '',
-    apiIntegrations: [],
-    agentJobs: [],
-    dashboardProjects: [],
-    imageUrl: ''
-  };
-
-  contactPageContent: ContactPageContent = {
-    title: '',
-    email: '',
-    phone: '',
-    address: '',
-    socialLinks: []
+  siteSettings: SiteSettings = {
+    theme: {
+      primaryColor: '',
+      backgroundColor: '',
+      textColor: '',
+      darkMode: true
+    },
+    hero: {
+      title: '',
+      subtitle: '',
+      ctaText: '',
+      ctaLink: '',
+      isActive: true
+    },
+    about: {
+      title: '',
+      developerBackgroundTitle: '',
+      developerBackground: '',
+      healthcareExperienceTitle: '',
+      healthcareExperience: '',
+      apiIntegrationsTitle: '',
+      apiIntegrations: [],
+      agentJobsTitle: '',
+      agentJobs: [],
+      dashboardProjectsTitle: '',
+      dashboardProjects: [],
+      imageUrl: '',
+      isActive: true
+    },
+    skills: {
+      title: '',
+      certificatesTitle: '',
+      isActive: true
+    },
+    projects: {
+      title: '',
+      isActive: true
+    },
+    contact: {
+      title: '',
+      contactFormTitle: '',
+      contactInfoTitle: '',
+      socialMediaTitle: '',
+      downloadCvTitle: '',
+      emailLabel: '',
+      phoneLabel: '',
+      addressLabel: '',
+      namePlaceholder: '',
+      emailPlaceholder: '',
+      subjectPlaceholder: '',
+      messagePlaceholder: '',
+      sendMessageButton: '',
+      email: '',
+      phone: '',
+      address: '',
+      socialLinks: [],
+      isActive: true
+    },
+    footer: {
+      copyrightText: '',
+      socialLinks: [],
+      isActive: true
+    },
+    isActive: true
   };
 
   newSocialLink: SocialLink = {
+    id: 0,
     name: '',
     url: '',
-    icon: ''
+    icon: '',
+    isActive: true
   };
 
   newApiIntegration: ApiIntegration = {
+    id: 0,
     name: '',
-    description: ''
+    description: '',
+    isActive: true
   };
 
   newAgentJob: AgentJob = {
+    id: 0,
     name: '',
-    description: ''
+    description: '',
+    isActive: true
   };
 
   newDashboardProject: DashboardProject = {
+    id: 0,
     name: '',
-    description: ''
+    description: '',
+    isActive: true
   };
 
   activeTab: string = 'home';
@@ -75,83 +131,93 @@ export class ContentManagementComponent implements OnInit {
   }
 
   loadContent(): void {
-    this.contentService.getHomePageContent().subscribe(content => {
-      this.homePageContent = {...content};
-    });
-
-    this.contentService.getAboutPageContent().subscribe(content => {
-      this.aboutPageContent = {...content};
+    this.contentService.getSiteSettings().subscribe(settings => {
+      this.siteSettings = {...settings};
+      
       // Initialize arrays if they don't exist
-      if (!this.aboutPageContent.apiIntegrations) this.aboutPageContent.apiIntegrations = [];
-      if (!this.aboutPageContent.agentJobs) this.aboutPageContent.agentJobs = [];
-      if (!this.aboutPageContent.dashboardProjects) this.aboutPageContent.dashboardProjects = [];
-    });
-
-    this.contentService.getContactPageContent().subscribe(content => {
-      this.contactPageContent = {...content};
+      if (!this.siteSettings.about.apiIntegrations) this.siteSettings.about.apiIntegrations = [];
+      if (!this.siteSettings.about.agentJobs) this.siteSettings.about.agentJobs = [];
+      if (!this.siteSettings.about.dashboardProjects) this.siteSettings.about.dashboardProjects = [];
+      if (!this.siteSettings.contact.socialLinks) this.siteSettings.contact.socialLinks = [];
+      if (!this.siteSettings.footer.socialLinks) this.siteSettings.footer.socialLinks = [];
     });
   }
 
-  async saveHomePageContent(): Promise<void> {
-    await this.contentService.updateHomePageContent(this.homePageContent);
-    alert('Ana sayfa içeriği başarıyla kaydedildi!');
+  async saveSiteSettings(): Promise<void> {
+    await this.contentService.updateSiteSettings(this.siteSettings);
+    alert('Site ayarları başarıyla kaydedildi!');
   }
 
-  async saveAboutPageContent(): Promise<void> {
-    await this.contentService.updateAboutPageContent(this.aboutPageContent);
-    alert('Hakkında sayfası içeriği başarıyla kaydedildi!');
-  }
-
-  async saveContactPageContent(): Promise<void> {
-    await this.contentService.updateContactPageContent(this.contactPageContent);
-    alert('İletişim sayfası içeriği başarıyla kaydedildi!');
-  }
-
-  addSocialLink(): void {
-    if (this.newSocialLink.name && this.newSocialLink.url && this.newSocialLink.icon) {
-      this.contactPageContent.socialLinks.push({...this.newSocialLink});
-      this.newSocialLink = { name: '', url: '', icon: '' };
+  addSocialLink(section: 'contact' | 'footer'): void {
+    const newLink = {...this.newSocialLink};
+    newLink.id = Date.now(); // Simple ID generation
+    
+    if (newLink.name && newLink.url && newLink.icon) {
+      if (section === 'contact') {
+        this.siteSettings.contact.socialLinks.push(newLink);
+      } else {
+        this.siteSettings.footer.socialLinks.push(newLink);
+      }
+      this.newSocialLink = { id: 0, name: '', url: '', icon: '', isActive: true };
     }
   }
 
-  removeSocialLink(index: number): void {
-    this.contactPageContent.socialLinks.splice(index, 1);
+  removeSocialLink(section: 'contact' | 'footer', index: number): void {
+    if (section === 'contact') {
+      this.siteSettings.contact.socialLinks.splice(index, 1);
+    } else {
+      this.siteSettings.footer.socialLinks.splice(index, 1);
+    }
   }
 
   addApiIntegration(): void {
-    if (this.newApiIntegration.name && this.newApiIntegration.description) {
-      this.aboutPageContent.apiIntegrations.push({...this.newApiIntegration});
-      this.newApiIntegration = { name: '', description: '' };
+    const newIntegration = {...this.newApiIntegration};
+    newIntegration.id = Date.now(); // Simple ID generation
+    
+    if (newIntegration.name && newIntegration.description) {
+      this.siteSettings.about.apiIntegrations.push(newIntegration);
+      this.newApiIntegration = { id: 0, name: '', description: '', isActive: true };
     }
   }
 
   removeApiIntegration(index: number): void {
-    this.aboutPageContent.apiIntegrations.splice(index, 1);
+    this.siteSettings.about.apiIntegrations.splice(index, 1);
   }
 
   addAgentJob(): void {
-    if (this.newAgentJob.name && this.newAgentJob.description) {
-      this.aboutPageContent.agentJobs.push({...this.newAgentJob});
-      this.newAgentJob = { name: '', description: '' };
+    const newJob = {...this.newAgentJob};
+    newJob.id = Date.now(); // Simple ID generation
+    
+    if (newJob.name && newJob.description) {
+      this.siteSettings.about.agentJobs.push(newJob);
+      this.newAgentJob = { id: 0, name: '', description: '', isActive: true };
     }
   }
 
   removeAgentJob(index: number): void {
-    this.aboutPageContent.agentJobs.splice(index, 1);
+    this.siteSettings.about.agentJobs.splice(index, 1);
   }
 
   addDashboardProject(): void {
-    if (this.newDashboardProject.name && this.newDashboardProject.description) {
-      this.aboutPageContent.dashboardProjects.push({...this.newDashboardProject});
-      this.newDashboardProject = { name: '', description: '' };
+    const newProject = {...this.newDashboardProject};
+    newProject.id = Date.now(); // Simple ID generation
+    
+    if (newProject.name && newProject.description) {
+      this.siteSettings.about.dashboardProjects.push(newProject);
+      this.newDashboardProject = { id: 0, name: '', description: '', isActive: true };
     }
   }
 
   removeDashboardProject(index: number): void {
-    this.aboutPageContent.dashboardProjects.splice(index, 1);
+    this.siteSettings.about.dashboardProjects.splice(index, 1);
   }
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
+  }
+  
+  // Helper method to get next ID for items
+  private getNextId(array: any[]): number {
+    return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
   }
 }

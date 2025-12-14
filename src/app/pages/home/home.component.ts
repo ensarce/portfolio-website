@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AnimationService } from '../../services/animation.service';
 import { SeoService } from '../../services/seo.service';
-import { ContentManagementService, HomePageContent } from '../../admin/services/content-management.service';
+import { ContentManagementService, SiteSettings } from '../../admin/services/content-management.service';
+import { PortfolioDataService, SkillCategory } from '../../services/portfolio-data.service';
 
 @Component({
   selector: 'app-home',
@@ -13,52 +14,87 @@ import { ContentManagementService, HomePageContent } from '../../admin/services/
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  homePageContent: HomePageContent = {
-    heroTitle: 'Merhaba, Ben Bir Yazılım Geliştiricisiyim',
-    heroSubtitle: 'C#, .NET, Angular ve Sağlık Sistemleri alanında uzmanlaşmış bir geliştirici olarak, kullanıcı odaklı çözümler üretiyorum.',
-    shortBio: 'Yaklaşık 5 yıldır yazılım geliştirme alanında çalışan bir profesyonel olarak, özellikle sağlık sektöründe entegre sistemler üzerine yoğunlaştım. Geliştirdiğim çözümlerle hastanelerde verimliliği artırmayı ve hasta deneyimini iyileştirmeyi hedefliyorum.'
+  siteSettings: SiteSettings = {
+    theme: {
+      primaryColor: '#00c3ff',
+      backgroundColor: '#0a0a0a',
+      textColor: '#ffffff',
+      darkMode: true
+    },
+    hero: {
+      title: 'Merhaba, Ben Bir Yazılım Geliştiricisiyim',
+      subtitle: 'C#, .NET, Angular ve Sağlık Sistemleri alanında uzmanlaşmış bir geliştirici olarak, kullanıcı odaklı çözümler üretiyorum.',
+      ctaText: 'Projelerime Göz Atın',
+      ctaLink: '/projects',
+      isActive: true
+    },
+    about: {
+      title: 'Hakkımda',
+      developerBackgroundTitle: '',
+      developerBackground: '',
+      healthcareExperienceTitle: '',
+      healthcareExperience: '',
+      apiIntegrationsTitle: '',
+      apiIntegrations: [],
+      agentJobsTitle: '',
+      agentJobs: [],
+      dashboardProjectsTitle: '',
+      dashboardProjects: [],
+      imageUrl: '',
+      isActive: true
+    },
+    skills: {
+      title: '',
+      certificatesTitle: '',
+      isActive: true
+    },
+    projects: {
+      title: '',
+      isActive: true
+    },
+    contact: {
+      title: 'İletişim',
+      contactFormTitle: '',
+      contactInfoTitle: '',
+      socialMediaTitle: '',
+      downloadCvTitle: '',
+      emailLabel: '',
+      phoneLabel: '',
+      addressLabel: '',
+      namePlaceholder: '',
+      emailPlaceholder: '',
+      subjectPlaceholder: '',
+      messagePlaceholder: '',
+      sendMessageButton: '',
+      email: '',
+      phone: '',
+      address: '',
+      socialLinks: [],
+      isActive: true
+    },
+    footer: {
+      copyrightText: '',
+      socialLinks: [],
+      isActive: true
+    },
+    isActive: true
   };
 
   // Technology stack data
-  technologies = [
-    { name: 'C#', level: 90, icon: 'fab fa-microsoft' },
-    { name: '.NET', level: 85, icon: 'fas fa-network-wired' },
-    { name: 'Angular', level: 80, icon: 'fab fa-angular' },
-    { name: 'SQL', level: 75, icon: 'fas fa-database' },
-    { name: 'REST API', level: 85, icon: 'fas fa-exchange-alt' },
-    { name: 'DevExpress', level: 70, icon: 'fas fa-chart-bar' },
-    { name: 'WordPress', level: 65, icon: 'fab fa-wordpress' },
-    { name: 'Agent Jobs', level: 75, icon: 'fas fa-tasks' },
-    { name: 'Automation Systems', level: 80, icon: 'fas fa-robot' }
-  ];
+  technologies: SkillCategory[] = [];
   
   // Featured projects data
-  featuredProjects = [
-    {
-      title: 'Hasta Bileklik Takip Sistemi',
-      description: 'Hastanelerde hasta konumunu gerçek zamanlı takip eden IoT tabanlı bir sistem.',
-      technologies: ['C#', '.NET', 'Angular', 'SQL']
-    },
-    {
-      title: 'Oda Durum Takip Ekranı',
-      description: 'Hastane odalarının doluluk durumunu gösteren dijital ekran sistemi.',
-      technologies: ['Angular', 'REST API', 'DevExpress']
-    },
-    {
-      title: 'Radyoloji İstek Sistemi',
-      description: 'Radyoloji departmanı için entegre istek ve raporlama sistemi.',
-      technologies: ['C#', '.NET', 'SQL', 'Agent Jobs']
-    }
-  ];
+  featuredProjects: any[] = [];
   
   constructor(
     private router: Router,
     private animationService: AnimationService,
     private seoService: SeoService,
-    private contentService: ContentManagementService
+    private contentService: ContentManagementService,
+    private portfolioDataService: PortfolioDataService
   ) {}
   
-  ngOnInit() {
+  async ngOnInit() {
     // Set SEO metadata
     this.seoService.updateMetaTags(
       'Ana Sayfa - Yazılım Geliştirici Portföyü',
@@ -67,9 +103,22 @@ export class HomeComponent implements OnInit {
       'assets/images/portfolio-preview.jpg'
     );
     
-    // Load content from service
-    this.contentService.getHomePageContent().subscribe(content => {
-      this.homePageContent = {...content};
+    // Load site settings from service
+    this.contentService.getSiteSettings().subscribe(settings => {
+      this.siteSettings = {...settings};
+    });
+    
+    // Load skills data
+    const skillsObservable = await this.portfolioDataService.getSkills();
+    skillsObservable.subscribe(skills => {
+      this.technologies = skills;
+    });
+    
+    // Load projects data
+    const projectsObservable = await this.portfolioDataService.getProjects();
+    projectsObservable.subscribe(projects => {
+      // Get first 3 projects as featured projects
+      this.featuredProjects = projects.slice(0, 3);
     });
     
     // Initialize animations after view loads
@@ -80,7 +129,7 @@ export class HomeComponent implements OnInit {
   }
   
   navigateToProjects() {
-    this.router.navigate(['/projects']);
+    this.router.navigate([this.siteSettings.hero.ctaLink || '/projects']);
   }
   
   navigateToContact() {
