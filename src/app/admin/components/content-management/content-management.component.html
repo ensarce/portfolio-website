@@ -12,13 +12,13 @@
 
   <!-- Tab Navigation -->
   <div class="max-w-6xl mx-auto px-4 py-6">
-    <div class="flex border-b border-gray-700 mb-6">
+    <div class="flex flex-wrap border-b border-gray-700 mb-6">
       <button 
-        (click)="setActiveTab('home')"
-        [class.active]="activeTab === 'home'"
+        (click)="setActiveTab('hero')"
+        [class.active]="activeTab === 'hero'"
         class="py-2 px-4 font-medium text-gray-300 hover:text-white border-b-2 border-transparent hover:border-neon-blue"
       >
-        Ana Sayfa
+        Hero Bölümü
       </button>
       <button 
         (click)="setActiveTab('about')"
@@ -53,874 +53,494 @@
         [class.active]="activeTab === 'settings'"
         class="py-2 px-4 font-medium text-gray-300 hover:text-white border-b-2 border-transparent hover:border-neon-blue"
       >
-        Ayarlar
+        Site Ayarları
       </button>
     </div>
 
-    <!-- Home Page Content -->
-    <div *ngIf="activeTab === 'home'" class="glass-effect rounded-2xl p-6">
-      <h2 class="text-2xl font-bold mb-6 text-neon-blue">Ana Sayfa İçeriği</h2>
-      
-      <form (ngSubmit)="saveSiteSettings()">
+    <form (ngSubmit)="saveContent()">
+      <!-- Hero Section -->
+      <div *ngIf="activeTab === 'hero'" class="glass-effect rounded-2xl p-6">
+        <h2 class="text-2xl font-bold mb-6 text-neon-blue">Hero Bölümü</h2>
+        
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Başlık (Displayed as main headline on homepage)</label>
+          <label class="block text-gray-300 mb-2">Başlık</label>
           <input 
             type="text" 
-            [(ngModel)]="siteSettings.hero.title"
+            [(ngModel)]="portfolioContent.heroSection.title"
             name="heroTitle"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Ana sayfa başlığı"
+            placeholder="Hero başlığı"
           >
         </div>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Alt Başlık (Displayed as subtitle on homepage)</label>
+          <label class="block text-gray-300 mb-2">Alt Başlık</label>
           <textarea 
-            [(ngModel)]="siteSettings.hero.subtitle"
+            [(ngModel)]="portfolioContent.heroSection.subtitle"
             name="heroSubtitle"
             rows="3"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Ana sayfa alt başlığı"
+            placeholder="Hero alt başlığı"
           ></textarea>
         </div>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">CTA Butonu Metni (Call-to-action button text on homepage)</label>
+          <label class="block text-gray-300 mb-2">CTA Buton Metni</label>
           <input 
             type="text" 
-            [(ngModel)]="siteSettings.hero.ctaText"
+            [(ngModel)]="portfolioContent.heroSection.ctaText"
             name="ctaText"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="CTA butonu metni"
+            placeholder="CTA buton metni"
           >
         </div>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">CTA Butonu Linki (Call-to-action button link on homepage)</label>
+          <label class="block text-gray-300 mb-2">CTA Buton Linki</label>
           <input 
             type="text" 
-            [(ngModel)]="siteSettings.hero.ctaLink"
+            [(ngModel)]="portfolioContent.heroSection.ctaLink"
             name="ctaLink"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="/projects"
+            placeholder="CTA buton linki"
           >
         </div>
         
         <div class="mb-6">
-          <label class="flex items-center text-gray-300">
+          <label class="flex items-center">
             <input 
               type="checkbox" 
-              [(ngModel)]="siteSettings.hero.isActive"
+              [(ngModel)]="portfolioContent.heroSection.isActive"
               name="heroIsActive"
-              class="mr-2 h-5 w-5"
+              class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
             >
-            <span>Ana sayfa hero bölümü aktif (Show/hide hero section on homepage)</span>
+            <span class="ml-2 text-gray-300">Hero bölümü aktif</span>
           </label>
         </div>
-        
-        <button 
-          type="submit"
-          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
-        >
-          Kaydet
-        </button>
-      </form>
-    </div>
+      </div>
 
-    <!-- About Page Content -->
-    <div *ngIf="activeTab === 'about'" class="glass-effect rounded-2xl p-6">
-      <h2 class="text-2xl font-bold mb-6 text-neon-blue">Hakkında Sayfası İçeriği</h2>
-      
-      <form (ngSubmit)="saveSiteSettings()">
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Başlık (Displayed as page title on about page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.about.title"
-            name="aboutTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Hakkında sayfası başlığı"
-          >
-        </div>
+      <!-- About Section -->
+      <div *ngIf="activeTab === 'about'" class="glass-effect rounded-2xl p-6">
+        <h2 class="text-2xl font-bold mb-6 text-neon-blue">Hakkında Bölümü</h2>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Geliştirici Geçmişi Başlığı (Developer background section title on about page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.about.developerBackgroundTitle"
-            name="developerBackgroundTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Geliştirici geçmişi başlığı"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Geliştirici Geçmişi (Developer background section on about page)</label>
+          <label class="block text-gray-300 mb-2">İçerik</label>
           <textarea 
-            [(ngModel)]="siteSettings.about.developerBackground"
-            name="developerBackground"
-            rows="6"
+            [(ngModel)]="portfolioContent.aboutSection.content"
+            name="aboutContent"
+            rows="8"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Geliştirici geçmişi içeriği"
+            placeholder="Hakkında bölümü içeriği"
           ></textarea>
         </div>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Sağlık Sistemleri Deneyimi Başlığı (Healthcare experience section title on about page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.about.healthcareExperienceTitle"
-            name="healthcareExperienceTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Sağlık sistemleri deneyimi başlığı"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Sağlık Sistemleri Deneyimi (Healthcare experience section on about page)</label>
-          <textarea 
-            [(ngModel)]="siteSettings.about.healthcareExperience"
-            name="healthcareExperience"
-            rows="6"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Sağlık sistemleri deneyimi içeriği"
-          ></textarea>
-        </div>
-        
-        <div class="mb-6">
-          <label class="flex items-center text-gray-300">
+          <label class="flex items-center">
             <input 
               type="checkbox" 
-              [(ngModel)]="siteSettings.about.isActive"
+              [(ngModel)]="portfolioContent.aboutSection.isActive"
               name="aboutIsActive"
-              class="mr-2 h-5 w-5"
+              class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
             >
-            <span>Hakkında sayfası bölümü aktif (Show/hide about section on website)</span>
+            <span class="ml-2 text-gray-300">Hakkında bölümü aktif</span>
           </label>
         </div>
-        
-        <!-- API Integrations -->
-        <div class="mb-6">
-          <h3 class="text-xl font-bold mb-4 text-purple-300">API Entegrasyonları (API integrations displayed in about section)</h3>
-          
-          <div class="mb-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label class="block text-gray-300 mb-2">Entegrasyon Adı (API integration name)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newApiIntegration.name"
-                  name="apiName"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="Örn: MHRS Entegrasyonu"
-                >
-              </div>
-              <div>
-                <label class="block text-gray-300 mb-2">Açıklama (API integration description)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newApiIntegration.description"
-                  name="apiDescription"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="Entegrasyon açıklaması"
-                >
-              </div>
-            </div>
-            <button 
-              type="button"
-              (click)="addApiIntegration()"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-            >
-              Entegrasyon Ekle
-            </button>
-          </div>
-          
-          <div class="mt-4">
-            <div 
-              *ngFor="let integration of siteSettings.about.apiIntegrations; let i = index" 
-              class="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
-            >
-              <div class="flex items-center">
-                <span class="font-medium">{{ integration.name }}</span>
-                <span class="mx-2">-</span>
-                <span class="text-gray-400">{{ integration.description }}</span>
-              </div>
-              <div class="flex items-center">
-                <label class="flex items-center text-gray-300 mr-4">
-                  <input 
-                    type="checkbox" 
-                    [(ngModel)]="integration.isActive"
-                    name="integrationIsActive{{i}}"
-                    class="mr-2 h-4 w-4"
-                  >
-                  <span>Aktif</span>
-                </label>
-                <button 
-                  type="button"
-                  (click)="removeApiIntegration(i)"
-                  class="text-red-500 hover:text-red-400"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Agent Jobs -->
-        <div class="mb-6">
-          <h3 class="text-xl font-bold mb-4 text-purple-300">Arka Plan İşleri (Background jobs displayed in about section)</h3>
-          
-          <div class="mb-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label class="block text-gray-300 mb-2">İş Adı (Background job name)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newAgentJob.name"
-                  name="jobName"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="Örn: Veri Senkronizasyonu"
-                >
-              </div>
-              <div>
-                <label class="block text-gray-300 mb-2">Açıklama (Background job description)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newAgentJob.description"
-                  name="jobDescription"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="İş açıklaması"
-                >
-              </div>
-            </div>
-            <button 
-              type="button"
-              (click)="addAgentJob()"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-            >
-              İş Ekle
-            </button>
-          </div>
-          
-          <div class="mt-4">
-            <div 
-              *ngFor="let job of siteSettings.about.agentJobs; let i = index" 
-              class="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
-            >
-              <div class="flex items-center">
-                <span class="font-medium">{{ job.name }}</span>
-                <span class="mx-2">-</span>
-                <span class="text-gray-400">{{ job.description }}</span>
-              </div>
-              <div class="flex items-center">
-                <label class="flex items-center text-gray-300 mr-4">
-                  <input 
-                    type="checkbox" 
-                    [(ngModel)]="job.isActive"
-                    name="jobIsActive{{i}}"
-                    class="mr-2 h-4 w-4"
-                  >
-                  <span>Aktif</span>
-                </label>
-                <button 
-                  type="button"
-                  (click)="removeAgentJob(i)"
-                  class="text-red-500 hover:text-red-400"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Dashboard Projects -->
-        <div class="mb-6">
-          <h3 class="text-xl font-bold mb-4 text-purple-300">Gösterge Tabloları (Dashboard projects displayed in about section)</h3>
-          
-          <div class="mb-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label class="block text-gray-300 mb-2">Proje Adı (Dashboard project name)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newDashboardProject.name"
-                  name="projectName"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="Örn: Hastane Yönetim Paneli"
-                >
-              </div>
-              <div>
-                <label class="block text-gray-300 mb-2">Açıklama (Dashboard project description)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newDashboardProject.description"
-                  name="projectDescription"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="Proje açıklaması"
-                >
-              </div>
-            </div>
-            <button 
-              type="button"
-              (click)="addDashboardProject()"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-            >
-              Proje Ekle
-            </button>
-          </div>
-          
-          <div class="mt-4">
-            <div 
-              *ngFor="let project of siteSettings.about.dashboardProjects; let i = index" 
-              class="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
-            >
-              <div class="flex items-center">
-                <span class="font-medium">{{ project.name }}</span>
-                <span class="mx-2">-</span>
-                <span class="text-gray-400">{{ project.description }}</span>
-              </div>
-              <div class="flex items-center">
-                <label class="flex items-center text-gray-300 mr-4">
-                  <input 
-                    type="checkbox" 
-                    [(ngModel)]="project.isActive"
-                    name="projectIsActive{{i}}"
-                    class="mr-2 h-4 w-4"
-                  >
-                  <span>Aktif</span>
-                </label>
-                <button 
-                  type="button"
-                  (click)="removeDashboardProject(i)"
-                  class="text-red-500 hover:text-red-400"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Profil Resmi URL (Profile image used in about section)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.about.imageUrl"
-            name="imageUrl"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Profil resmi URL"
-          >
-        </div>
-        
-        <button 
-          type="submit"
-          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
-        >
-          Kaydet
-        </button>
-      </form>
-    </div>
+      </div>
 
-    <!-- Skills Page Content -->
-    <div *ngIf="activeTab === 'skills'" class="glass-effect rounded-2xl p-6">
-      <h2 class="text-2xl font-bold mb-6 text-neon-blue">Yetenekler Sayfası İçeriği</h2>
-      
-      <form (ngSubmit)="saveSiteSettings()">
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Başlık (Displayed as page title on skills page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.skills.title"
-            name="skillsTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Yetenekler sayfası başlığı"
-          >
-        </div>
+      <!-- Skills Section -->
+      <div *ngIf="activeTab === 'skills'" class="glass-effect rounded-2xl p-6">
+        <h2 class="text-2xl font-bold mb-6 text-neon-blue">Yetenekler Bölümü</h2>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Sertifikalar Başlığı (Certificates section title on skills page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.skills.certificatesTitle"
-            name="certificatesTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Sertifikalar başlığı"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="flex items-center text-gray-300">
+          <label class="flex items-center">
             <input 
               type="checkbox" 
-              [(ngModel)]="siteSettings.skills.isActive"
+              [(ngModel)]="portfolioContent.skillsSection.isActive"
               name="skillsIsActive"
-              class="mr-2 h-5 w-5"
+              class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
             >
-            <span>Yetenekler sayfası bölümü aktif (Show/hide skills section on website)</span>
+            <span class="ml-2 text-gray-300">Yetenekler bölümü aktif</span>
           </label>
         </div>
         
-        <button 
-          type="submit"
-          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
-        >
-          Kaydet
-        </button>
-      </form>
-    </div>
-
-    <!-- Projects Page Content -->
-    <div *ngIf="activeTab === 'projects'" class="glass-effect rounded-2xl p-6">
-      <h2 class="text-2xl font-bold mb-6 text-neon-blue">Projeler Sayfası İçeriği</h2>
-      
-      <form (ngSubmit)="saveSiteSettings()">
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Başlık (Displayed as page title on projects page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.projects.title"
-            name="projectsTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Projeler sayfası başlığı"
+        <!-- Add new skill -->
+        <div class="mb-6 p-4 bg-gray-800 rounded-lg">
+          <h3 class="text-xl font-bold mb-4 text-purple-300">Yeni Yetenek Ekle</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-300 mb-2">Yetenek Adı</label>
+              <input 
+                type="text" 
+                [(ngModel)]="newSkill.name"
+                name="skillName"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                placeholder="Yetenek adı"
+              >
+            </div>
+            <div>
+              <label class="block text-gray-300 mb-2">Seviye (0-100)</label>
+              <input 
+                type="number" 
+                [(ngModel)]="newSkill.level"
+                name="skillLevel"
+                min="0"
+                max="100"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                placeholder="Yetenek seviyesi"
+              >
+            </div>
+            <div>
+              <label class="block text-gray-300 mb-2">Kategori</label>
+              <input 
+                type="text" 
+                [(ngModel)]="newSkill.category"
+                name="skillCategory"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                placeholder="Yetenek kategorisi"
+              >
+            </div>
+            <div>
+              <label class="block text-gray-300 mb-2">Sıra</label>
+              <input 
+                type="number" 
+                [(ngModel)]="newSkill.order"
+                name="skillOrder"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                placeholder="Gösterim sırası"
+              >
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="newSkill.isActive"
+                name="newSkillIsActive"
+                class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
+              >
+              <span class="ml-2 text-gray-300">Yetenek aktif</span>
+            </label>
+          </div>
+          
+          <button 
+            type="button"
+            (click)="addSkill()"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
           >
+            Yetenek Ekle
+          </button>
         </div>
         
+        <!-- Existing skills -->
+        <div class="mt-6">
+          <h3 class="text-xl font-bold mb-4 text-purple-300">Mevcut Yetenekler</h3>
+          
+          <div 
+            *ngFor="let skill of portfolioContent.skillsSection.skills; let i = index" 
+            class="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
+          >
+            <div class="flex items-center">
+              <span class="font-medium">{{ skill.name }}</span>
+              <span class="mx-2">-</span>
+              <span class="text-gray-400">{{ skill.level }}%</span>
+              <span class="mx-2">-</span>
+              <span class="text-gray-400">{{ skill.category }}</span>
+            </div>
+            <button 
+              type="button"
+              (click)="removeSkill(i)"
+              class="text-red-500 hover:text-red-400"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects Section -->
+      <div *ngIf="activeTab === 'projects'" class="glass-effect rounded-2xl p-6">
+        <h2 class="text-2xl font-bold mb-6 text-neon-blue">Projeler Bölümü</h2>
+        
         <div class="mb-6">
-          <label class="flex items-center text-gray-300">
+          <label class="flex items-center">
             <input 
               type="checkbox" 
-              [(ngModel)]="siteSettings.projects.isActive"
+              [(ngModel)]="portfolioContent.projectsSection.isActive"
               name="projectsIsActive"
-              class="mr-2 h-5 w-5"
+              class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
             >
-            <span>Projeler sayfası bölümü aktif (Show/hide projects section on website)</span>
+            <span class="ml-2 text-gray-300">Projeler bölümü aktif</span>
           </label>
         </div>
         
-        <button 
-          type="submit"
-          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
-        >
-          Kaydet
-        </button>
-      </form>
-    </div>
+        <!-- Add new project -->
+        <div class="mb-6 p-4 bg-gray-800 rounded-lg">
+          <h3 class="text-xl font-bold mb-4 text-purple-300">Yeni Proje Ekle</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-300 mb-2">Proje Adı</label>
+              <input 
+                type="text" 
+                [(ngModel)]="newProject.title"
+                name="projectTitle"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                placeholder="Proje adı"
+              >
+            </div>
+            <div>
+              <label class="block text-gray-300 mb-2">Sıra</label>
+              <input 
+                type="number" 
+                [(ngModel)]="newProject.order"
+                name="projectOrder"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                placeholder="Gösterim sırası"
+              >
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-gray-300 mb-2">Açıklama</label>
+            <textarea 
+              [(ngModel)]="newProject.description"
+              name="projectDescription"
+              rows="3"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+              placeholder="Proje açıklaması"
+            ></textarea>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-gray-300 mb-2">Teknolojiler</label>
+            <div class="flex mb-2">
+              <input 
+                type="text" 
+                [(ngModel)]="newTechnology"
+                name="newTechnology"
+                class="flex-grow bg-gray-700 border border-gray-600 rounded-l-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                placeholder="Teknoloji adı"
+              >
+              <button 
+                type="button"
+                (click)="addTechnology()"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg transition duration-300"
+              >
+                Ekle
+              </button>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span 
+                *ngFor="let tech of newProject.technologies; let i = index"
+                class="inline-flex items-center bg-gray-700 px-3 py-1 rounded-full text-sm"
+              >
+                {{ tech }}
+                <button 
+                  type="button"
+                  (click)="removeTechnology(i)"
+                  class="ml-2 text-red-400 hover:text-red-300"
+                >
+                  ×
+                </button>
+              </span>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="newProject.isActive"
+                name="newProjectIsActive"
+                class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
+              >
+              <span class="ml-2 text-gray-300">Proje aktif</span>
+            </label>
+          </div>
+          
+          <button 
+            type="button"
+            (click)="addProject()"
+            class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            Proje Ekle
+          </button>
+        </div>
+        
+        <!-- Existing projects -->
+        <div class="mt-6">
+          <h3 class="text-xl font-bold mb-4 text-purple-300">Mevcut Projeler</h3>
+          
+          <div 
+            *ngFor="let project of portfolioContent.projectsSection.projects; let i = index" 
+            class="bg-gray-800 p-4 rounded-lg mb-4"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-bold text-lg">{{ project.title }}</h4>
+                <p class="text-gray-400 mt-2">{{ project.description }}</p>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span 
+                    *ngFor="let tech of project.technologies"
+                    class="inline-block bg-gray-700 px-2 py-1 rounded text-xs"
+                  >
+                    {{ tech }}
+                  </span>
+                </div>
+              </div>
+              <button 
+                type="button"
+                (click)="removeProject(i)"
+                class="text-red-500 hover:text-red-400"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- Contact Page Content -->
-    <div *ngIf="activeTab === 'contact'" class="glass-effect rounded-2xl p-6">
-      <h2 class="text-2xl font-bold mb-6 text-neon-blue">İletişim Sayfası İçeriği</h2>
-      
-      <form (ngSubmit)="saveSiteSettings()">
+      <!-- Contact Section -->
+      <div *ngIf="activeTab === 'contact'" class="glass-effect rounded-2xl p-6">
+        <h2 class="text-2xl font-bold mb-6 text-neon-blue">İletişim Bölümü</h2>
+        
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Başlık (Displayed as page title on contact page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.title"
-            name="contactTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="İletişim sayfası başlığı"
-          >
+          <label class="flex items-center">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="portfolioContent.contactSection.isActive"
+              name="contactIsActive"
+              class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
+            >
+            <span class="ml-2 text-gray-300">İletişim bölümü aktif</span>
+          </label>
         </div>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">İletişim Formu Başlığı (Contact form title on contact page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.contactFormTitle"
-            name="contactFormTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="İletişim formu başlığı"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">İletişim Bilgileri Başlığı (Contact info title on contact page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.contactInfoTitle"
-            name="contactInfoTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="İletişim bilgileri başlığı"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Sosyal Medya Başlığı (Social media title on contact page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.socialMediaTitle"
-            name="socialMediaTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Sosyal medya başlığı"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">CV İndirme Başlığı (Download CV title on contact page)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.downloadCvTitle"
-            name="downloadCvTitle"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="CV indirme başlığı"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">E-posta Etiketi (Email label on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.emailLabel"
-            name="emailLabel"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="E-posta etiketi"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Telefon Etiketi (Phone label on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.phoneLabel"
-            name="phoneLabel"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Telefon etiketi"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Adres Etiketi (Address label on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.addressLabel"
-            name="addressLabel"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Adres etiketi"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Ad Placeholder (Name placeholder on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.namePlaceholder"
-            name="namePlaceholder"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Ad placeholder"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">E-posta Placeholder (Email placeholder on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.emailPlaceholder"
-            name="emailPlaceholder"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="E-posta placeholder"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Konu Placeholder (Subject placeholder on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.subjectPlaceholder"
-            name="subjectPlaceholder"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Konu placeholder"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Mesaj Placeholder (Message placeholder on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.messagePlaceholder"
-            name="messagePlaceholder"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Mesaj placeholder"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Gönder Butonu Metni (Send button text on contact form)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.contact.sendMessageButton"
-            name="sendMessageButton"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Gönder butonu metni"
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">E-posta (Email address displayed on contact page)</label>
+          <label class="block text-gray-300 mb-2">E-posta</label>
           <input 
             type="email" 
-            [(ngModel)]="siteSettings.contact.email"
-            name="email"
+            [(ngModel)]="portfolioContent.contactSection.email"
+            name="contactEmail"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
             placeholder="E-posta adresi"
           >
         </div>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Telefon (Phone number displayed on contact page)</label>
+          <label class="block text-gray-300 mb-2">GitHub</label>
           <input 
             type="text" 
-            [(ngModel)]="siteSettings.contact.phone"
-            name="phone"
+            [(ngModel)]="portfolioContent.contactSection.github"
+            name="contactGithub"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Telefon numarası"
+            placeholder="GitHub profil URL"
           >
         </div>
         
         <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Adres (Address displayed on contact page)</label>
+          <label class="block text-gray-300 mb-2">LinkedIn</label>
           <input 
             type="text" 
-            [(ngModel)]="siteSettings.contact.address"
-            name="address"
+            [(ngModel)]="portfolioContent.contactSection.linkedin"
+            name="contactLinkedin"
             class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="Adres"
+            placeholder="LinkedIn profil URL"
           >
         </div>
         
         <div class="mb-6">
-          <label class="flex items-center text-gray-300">
-            <input 
-              type="checkbox" 
-              [(ngModel)]="siteSettings.contact.isActive"
-              name="contactIsActive"
-              class="mr-2 h-5 w-5"
-            >
-            <span>İletişim sayfası bölümü aktif (Show/hide contact section on website)</span>
-          </label>
+          <label class="block text-gray-300 mb-2">WhatsApp</label>
+          <input 
+            type="text" 
+            [(ngModel)]="portfolioContent.contactSection.whatsapp"
+            name="contactWhatsapp"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="WhatsApp numarası"
+          >
         </div>
+      </div>
+
+      <!-- Site Settings -->
+      <div *ngIf="activeTab === 'settings'" class="glass-effect rounded-2xl p-6">
+        <h2 class="text-2xl font-bold mb-6 text-neon-blue">Site Ayarları</h2>
         
-        <!-- Social Links -->
         <div class="mb-6">
-          <h3 class="text-xl font-bold mb-4 text-purple-300">Sosyal Medya Bağlantıları (Social media links displayed on contact page)</h3>
-          
-          <div class="mb-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div>
-                <label class="block text-gray-300 mb-2">Ad (Social media platform name)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newSocialLink.name"
-                  name="socialName"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="Örn: LinkedIn"
-                >
-              </div>
-              <div>
-                <label class="block text-gray-300 mb-2">URL (Social media profile URL)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newSocialLink.url"
-                  name="socialUrl"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="https://..."
-                >
-              </div>
-              <div>
-                <label class="block text-gray-300 mb-2">İkon (Font Awesome icon class)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newSocialLink.icon"
-                  name="socialIcon"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="fab fa-linkedin"
-                >
-              </div>
+          <label class="block text-gray-300 mb-2">Footer Metni</label>
+          <input 
+            type="text" 
+            [(ngModel)]="portfolioContent.siteSettings.footerText"
+            name="footerText"
+            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+            placeholder="Footer metni"
+          >
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-bold mb-4 text-purple-300">Tema Ayarları</h3>
+            
+            <div class="mb-4">
+              <label class="block text-gray-300 mb-2">Ana Renk</label>
+              <input 
+                type="color" 
+                [(ngModel)]="portfolioContent.siteSettings.theme.primaryColor"
+                name="primaryColor"
+                class="w-full h-10 bg-gray-800 border border-gray-700 rounded-lg"
+              >
             </div>
-            <button 
-              type="button"
-              (click)="addSocialLink('contact')"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-            >
-              Bağlantı Ekle
-            </button>
-          </div>
-          
-          <div class="mt-4">
-            <div 
-              *ngFor="let link of siteSettings.contact.socialLinks; let i = index" 
-              class="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
-            >
-              <div class="flex items-center">
-                <i [class]="link.icon" class="text-neon-blue mr-3"></i>
-                <span>{{ link.name }}</span>
-              </div>
-              <div class="flex items-center">
-                <label class="flex items-center text-gray-300 mr-4">
-                  <input 
-                    type="checkbox" 
-                    [(ngModel)]="link.isActive"
-                    name="linkIsActive{{i}}"
-                    class="mr-2 h-4 w-4"
-                  >
-                  <span>Aktif</span>
-                </label>
-                <button 
-                  type="button"
-                  (click)="removeSocialLink('contact', i)"
-                  class="text-red-500 hover:text-red-400"
+            
+            <div class="mb-4">
+              <label class="block text-gray-300 mb-2">Arka Plan Rengi</label>
+              <input 
+                type="color" 
+                [(ngModel)]="portfolioContent.siteSettings.theme.backgroundColor"
+                name="backgroundColor"
+                class="w-full h-10 bg-gray-800 border border-gray-700 rounded-lg"
+              >
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-300 mb-2">Metin Rengi</label>
+              <input 
+                type="color" 
+                [(ngModel)]="portfolioContent.siteSettings.theme.textColor"
+                name="textColor"
+                class="w-full h-10 bg-gray-800 border border-gray-700 rounded-lg"
+              >
+            </div>
+            
+            <div class="mb-4">
+              <label class="flex items-center">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="portfolioContent.siteSettings.theme.darkMode"
+                  name="darkMode"
+                  class="form-checkbox h-5 w-5 text-neon-blue rounded focus:ring-neon-blue"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
+                <span class="ml-2 text-gray-300">Koyu tema</span>
+              </label>
             </div>
           </div>
         </div>
-        
+      </div>
+
+      <!-- Save Button -->
+      <div class="mt-6">
         <button 
           type="submit"
-          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
+          class="bg-neon-blue text-dark-gray font-bold py-3 px-6 rounded-lg hover:bg-purple-500 transition duration-300 w-full md:w-auto"
         >
-          Kaydet
+          Tüm Değişiklikleri Kaydet
         </button>
-      </form>
-    </div>
-    
-    <!-- Site Settings -->
-    <div *ngIf="activeTab === 'settings'" class="glass-effect rounded-2xl p-6">
-      <h2 class="text-2xl font-bold mb-6 text-neon-blue">Site Ayarları</h2>
-      
-      <form (ngSubmit)="saveSiteSettings()">
-        <div class="mb-6">
-          <label class="block text-gray-300 mb-2">Footer Telif Hakkı Metni (Copyright text displayed in footer)</label>
-          <input 
-            type="text" 
-            [(ngModel)]="siteSettings.footer.copyrightText"
-            name="copyrightText"
-            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-            placeholder="© 2023 Tüm hakları saklıdır."
-          >
-        </div>
-        
-        <div class="mb-6">
-          <label class="flex items-center text-gray-300">
-            <input 
-              type="checkbox" 
-              [(ngModel)]="siteSettings.footer.isActive"
-              name="footerIsActive"
-              class="mr-2 h-5 w-5"
-            >
-            <span>Footer bölümü aktif (Show/hide footer on website)</span>
-          </label>
-        </div>
-        
-        <div class="mb-6">
-          <label class="flex items-center text-gray-300">
-            <input 
-              type="checkbox" 
-              [(ngModel)]="siteSettings.isActive"
-              name="siteIsActive"
-              class="mr-2 h-5 w-5"
-            >
-            <span>Site aktif (Enable/disable entire website)</span>
-          </label>
-        </div>
-        
-        <!-- Footer Social Links -->
-        <div class="mb-6">
-          <h3 class="text-xl font-bold mb-4 text-purple-300">Footer Sosyal Medya Bağlantıları (Social media links displayed in footer)</h3>
-          
-          <div class="mb-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div>
-                <label class="block text-gray-300 mb-2">Ad (Social media platform name)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newSocialLink.name"
-                  name="footerSocialName"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="Örn: LinkedIn"
-                >
-              </div>
-              <div>
-                <label class="block text-gray-300 mb-2">URL (Social media profile URL)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newSocialLink.url"
-                  name="footerSocialUrl"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="https://..."
-                >
-              </div>
-              <div>
-                <label class="block text-gray-300 mb-2">İkon (Font Awesome icon class)</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="newSocialLink.icon"
-                  name="footerSocialIcon"
-                  class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
-                  placeholder="fab fa-linkedin"
-                >
-              </div>
-            </div>
-            <button 
-              type="button"
-              (click)="addSocialLink('footer')"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-            >
-              Bağlantı Ekle
-            </button>
-          </div>
-          
-          <div class="mt-4">
-            <div 
-              *ngFor="let link of siteSettings.footer.socialLinks; let i = index" 
-              class="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
-            >
-              <div class="flex items-center">
-                <i [class]="link.icon" class="text-neon-blue mr-3"></i>
-                <span>{{ link.name }}</span>
-              </div>
-              <div class="flex items-center">
-                <label class="flex items-center text-gray-300 mr-4">
-                  <input 
-                    type="checkbox" 
-                    [(ngModel)]="link.isActive"
-                    name="footerLinkIsActive{{i}}"
-                    class="mr-2 h-4 w-4"
-                  >
-                  <span>Aktif</span>
-                </label>
-                <button 
-                  type="button"
-                  (click)="removeSocialLink('footer', i)"
-                  class="text-red-500 hover:text-red-400"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <button 
-          type="submit"
-          class="bg-neon-blue text-dark-gray font-bold py-2 px-6 rounded-lg hover:bg-purple-500 transition duration-300"
-        >
-          Kaydet
-        </button>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </div>

@@ -4,20 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { 
   ContentManagementService, 
-  SiteSettings
-} from '../../services/content-management.service';
-import { 
-  HeroSettings, 
-  AboutSection, 
-  ContactSection, 
-  FooterSection, 
-  ApiIntegration, 
-  AgentJob, 
-  DashboardProject, 
-  SocialLink,
+  PortfolioContent,
+  HeroSection,
+  AboutSection,
   SkillsSection,
-  ProjectsSection
-} from '../../models/content-models';
+  Skill,
+  ProjectsSection,
+  Project,
+  ContactSection,
+  SiteSettings,
+  ThemeSettings
+} from '../../services/content-management.service';
 
 @Component({
   selector: 'app-content-management',
@@ -27,102 +24,64 @@ import {
   styleUrls: ['./content-management.component.scss']
 })
 export class ContentManagementComponent implements OnInit {
-  siteSettings: SiteSettings = {
-    theme: {
-      primaryColor: '',
-      backgroundColor: '',
-      textColor: '',
-      darkMode: true
+  portfolioContent: PortfolioContent = {
+    siteSettings: {
+      theme: {
+        primaryColor: '',
+        backgroundColor: '',
+        textColor: '',
+        darkMode: true
+      },
+      footerText: ''
     },
-    hero: {
+    heroSection: {
       title: '',
       subtitle: '',
       ctaText: '',
       ctaLink: '',
       isActive: true
     },
-    about: {
-      title: '',
-      developerBackgroundTitle: '',
-      developerBackground: '',
-      healthcareExperienceTitle: '',
-      healthcareExperience: '',
-      apiIntegrationsTitle: '',
-      apiIntegrations: [],
-      agentJobsTitle: '',
-      agentJobs: [],
-      dashboardProjectsTitle: '',
-      dashboardProjects: [],
-      imageUrl: '',
+    aboutSection: {
+      content: '',
       isActive: true
     },
-    skills: {
-      title: '',
-      certificatesTitle: '',
-      isActive: true
+    skillsSection: {
+      isActive: true,
+      skills: []
     },
-    projects: {
-      title: '',
-      isActive: true
+    projectsSection: {
+      isActive: true,
+      projects: []
     },
-    contact: {
-      title: '',
-      contactFormTitle: '',
-      contactInfoTitle: '',
-      socialMediaTitle: '',
-      downloadCvTitle: '',
-      emailLabel: '',
-      phoneLabel: '',
-      addressLabel: '',
-      namePlaceholder: '',
-      emailPlaceholder: '',
-      subjectPlaceholder: '',
-      messagePlaceholder: '',
-      sendMessageButton: '',
+    contactSection: {
+      isActive: true,
       email: '',
-      phone: '',
-      address: '',
-      socialLinks: [],
-      isActive: true
-    },
-    footer: {
-      copyrightText: '',
-      socialLinks: [],
-      isActive: true
-    },
+      github: '',
+      linkedin: '',
+      whatsapp: ''
+    }
+  };
+
+  // New items for adding
+  newSkill: Skill = {
+    name: '',
+    level: 0,
+    category: '',
+    order: 0,
     isActive: true
   };
 
-  newSocialLink: SocialLink = {
-    id: 0,
-    name: '',
-    url: '',
-    icon: '',
-    isActive: true
-  };
-
-  newApiIntegration: ApiIntegration = {
-    id: 0,
-    name: '',
+  newProject: Project = {
+    title: '',
     description: '',
+    technologies: [],
+    order: 0,
     isActive: true
   };
 
-  newAgentJob: AgentJob = {
-    id: 0,
-    name: '',
-    description: '',
-    isActive: true
-  };
+  newTechnology: string = '';
 
-  newDashboardProject: DashboardProject = {
-    id: 0,
-    name: '',
-    description: '',
-    isActive: true
-  };
-
-  activeTab: string = 'home';
+  activeTab: string = 'hero';
 
   constructor(private contentService: ContentManagementService) {}
 
@@ -131,93 +90,53 @@ export class ContentManagementComponent implements OnInit {
   }
 
   loadContent(): void {
-    this.contentService.getSiteSettings().subscribe(settings => {
-      this.siteSettings = {...settings};
-      
+    this.contentService.getContent().subscribe(content => {
+      this.portfolioContent = {...content};
       // Initialize arrays if they don't exist
-      if (!this.siteSettings.about.apiIntegrations) this.siteSettings.about.apiIntegrations = [];
-      if (!this.siteSettings.about.agentJobs) this.siteSettings.about.agentJobs = [];
-      if (!this.siteSettings.about.dashboardProjects) this.siteSettings.about.dashboardProjects = [];
-      if (!this.siteSettings.contact.socialLinks) this.siteSettings.contact.socialLinks = [];
-      if (!this.siteSettings.footer.socialLinks) this.siteSettings.footer.socialLinks = [];
+      if (!this.portfolioContent.skillsSection.skills) this.portfolioContent.skillsSection.skills = [];
+      if (!this.portfolioContent.projectsSection.projects) this.portfolioContent.projectsSection.projects = [];
     });
   }
 
-  async saveSiteSettings(): Promise<void> {
-    await this.contentService.updateSiteSettings(this.siteSettings);
-    alert('Site ayarları başarıyla kaydedildi!');
+  async saveContent(): Promise<void> {
+    await this.contentService.updateContent(this.portfolioContent);
+    alert('İçerik başarıyla kaydedildi!');
   }
 
-  addSocialLink(section: 'contact' | 'footer'): void {
-    const newLink = {...this.newSocialLink};
-    newLink.id = Date.now(); // Simple ID generation
-    
-    if (newLink.name && newLink.url && newLink.icon) {
-      if (section === 'contact') {
-        this.siteSettings.contact.socialLinks.push(newLink);
-      } else {
-        this.siteSettings.footer.socialLinks.push(newLink);
-      }
-      this.newSocialLink = { id: 0, name: '', url: '', icon: '', isActive: true };
+  addSkill(): void {
+    if (this.newSkill.name && this.newSkill.level > 0) {
+      this.portfolioContent.skillsSection.skills.push({...this.newSkill});
+      this.newSkill = { name: '', level: 0, category: '', order: 0, isActive: true };
     }
   }
 
-  removeSocialLink(section: 'contact' | 'footer', index: number): void {
-    if (section === 'contact') {
-      this.siteSettings.contact.socialLinks.splice(index, 1);
-    } else {
-      this.siteSettings.footer.socialLinks.splice(index, 1);
+  removeSkill(index: number): void {
+    this.portfolioContent.skillsSection.skills.splice(index, 1);
+  }
+
+  addProject(): void {
+    if (this.newProject.title && this.newProject.description) {
+      this.portfolioContent.projectsSection.projects.push({...this.newProject});
+      this.newProject = { title: '', description: '', technologies: [], order: 0, isActive: true };
     }
   }
 
-  addApiIntegration(): void {
-    const newIntegration = {...this.newApiIntegration};
-    newIntegration.id = Date.now(); // Simple ID generation
-    
-    if (newIntegration.name && newIntegration.description) {
-      this.siteSettings.about.apiIntegrations.push(newIntegration);
-      this.newApiIntegration = { id: 0, name: '', description: '', isActive: true };
+  removeProject(index: number): void {
+    this.portfolioContent.projectsSection.projects.splice(index, 1);
+  }
+
+  addTechnology(): void {
+    if (this.newTechnology.trim()) {
+      this.newProject.technologies.push(this.newTechnology.trim());
+      this.newTechnology = '';
     }
   }
 
-  removeApiIntegration(index: number): void {
-    this.siteSettings.about.apiIntegrations.splice(index, 1);
-  }
-
-  addAgentJob(): void {
-    const newJob = {...this.newAgentJob};
-    newJob.id = Date.now(); // Simple ID generation
-    
-    if (newJob.name && newJob.description) {
-      this.siteSettings.about.agentJobs.push(newJob);
-      this.newAgentJob = { id: 0, name: '', description: '', isActive: true };
-    }
-  }
-
-  removeAgentJob(index: number): void {
-    this.siteSettings.about.agentJobs.splice(index, 1);
-  }
-
-  addDashboardProject(): void {
-    const newProject = {...this.newDashboardProject};
-    newProject.id = Date.now(); // Simple ID generation
-    
-    if (newProject.name && newProject.description) {
-      this.siteSettings.about.dashboardProjects.push(newProject);
-      this.newDashboardProject = { id: 0, name: '', description: '', isActive: true };
-    }
-  }
-
-  removeDashboardProject(index: number): void {
-    this.siteSettings.about.dashboardProjects.splice(index, 1);
+  removeTechnology(index: number): void {
+    this.newProject.technologies.splice(index, 1);
   }
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
-  }
-  
-  // Helper method to get next ID for items
-  private getNextId(array: any[]): number {
-    return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
   }
 }

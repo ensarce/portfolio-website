@@ -1,34 +1,84 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { 
-  HeroSettings, 
-  AboutSection, 
-  ContactSection, 
-  FooterSection, 
-  ApiIntegration, 
-  AgentJob, 
-  DashboardProject, 
-  SocialLink,
-  SiteSettings,
-  SkillsSection,
-  ProjectsSection
-} from '../models/content-models';
 
-// Export all interfaces for use in components
-export type { 
-  HeroSettings, 
-  AboutSection, 
-  ContactSection, 
-  FooterSection, 
-  ApiIntegration, 
-  AgentJob, 
-  DashboardProject, 
-  SocialLink,
-  SiteSettings,
-  SkillsSection,
-  ProjectsSection
-};
+// Theme interface
+export interface ThemeSettings {
+  primaryColor: string;
+  backgroundColor: string;
+  textColor: string;
+  darkMode: boolean;
+}
+
+// Site settings interface
+export interface SiteSettings {
+  theme: ThemeSettings;
+  footerText: string;
+}
+
+// Hero section interface
+export interface HeroSection {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  ctaLink: string;
+  isActive: boolean;
+}
+
+// About section interface
+export interface AboutSection {
+  content: string;
+  isActive: boolean;
+}
+
+// Skill interface
+export interface Skill {
+  name: string;
+  level: number;
+  category: string;
+  order: number;
+  isActive: boolean;
+}
+
+// Skills section interface
+export interface SkillsSection {
+  isActive: boolean;
+  skills: Skill[];
+}
+
+// Project interface
+export interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  order: number;
+  isActive: boolean;
+}
+
+// Projects section interface
+export interface ProjectsSection {
+  isActive: boolean;
+  projects: Project[];
+}
+
+// Contact section interface
+export interface ContactSection {
+  isActive: boolean;
+  email: string;
+  github: string;
+  linkedin: string;
+  whatsapp: string;
+}
+
+// Main content interface
+export interface PortfolioContent {
+  siteSettings: SiteSettings;
+  heroSection: HeroSection;
+  aboutSection: AboutSection;
+  skillsSection: SkillsSection;
+  projectsSection: ProjectsSection;
+  contactSection: ContactSection;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -36,177 +86,127 @@ export type {
 export class ContentManagementService {
   private isBrowser: boolean;
   
-  // Default content with structured models
-  private defaultSiteSettings: SiteSettings = {
-    theme: {
-      primaryColor: '#00c3ff',
-      backgroundColor: '#0a0a0a',
-      textColor: '#ffffff',
-      darkMode: true
+  // Default content based on the provided JSON
+  private defaultContent: PortfolioContent = {
+    siteSettings: {
+      theme: {
+        primaryColor: "#3B82F6",
+        backgroundColor: "#0F172A",
+        textColor: "#E5E7EB",
+        darkMode: true
+      },
+      footerText: "© 2025 Ensar CE | Software Developer"
     },
-    hero: {
-      title: 'Merhaba, Ben Bir Yazılım Geliştiricisiyim',
-      subtitle: 'C#, .NET, Angular ve Sağlık Sistemleri alanında uzmanlaşmış bir geliştirici olarak, kullanıcı odaklı çözümler üretiyorum.',
-      ctaText: 'Projelerime Göz Atın',
-      ctaLink: '/projects',
+    heroSection: {
+      title: "Merhaba, Ben Ensar",
+      subtitle: "C#, .NET ve Angular ile özellikle sağlık sistemleri alanında kurumsal yazılımlar geliştiriyorum.",
+      ctaText: "Projelerimi Gör",
+      ctaLink: "#/projects",
       isActive: true
     },
-    about: {
-      title: 'Hakkımda',
-      developerBackgroundTitle: 'Geliştirici Geçmişim',
-      developerBackground: 'Yazılım geliştirmesine 5 yıl önce başladım ve o zamandan beri sürekli öğrenmeye ve kendimi geliştirmeye devam ediyorum. Başlangıçta C# ve .NET teknolojileriyle masaüstü uygulamalar geliştirerek kariyerime başladım. Zamanla web teknolojilerine yönelerek Angular ile frontend geliştirme konusunda da uzmanlaştım. Özellikle sağlık sektöründe çalışmak beni çok ilgilendiriyor çünkü bu alanda geliştirdiğim çözümler doğrudan insan hayatına dokunuyor ve fark yaratıyor.',
-      healthcareExperienceTitle: 'Sağlık Sistemleri Deneyimim',
-      healthcareExperience: 'Sağlık sektöründe 3 yıldır aktif olarak çalışıyorum ve bu süreçte hastanelerde kullanılan çeşitli sistemlerin entegrasyonu ve iyileştirilmesi üzerine projelerde yer aldım. Bu projeler arasında: Hasta takip sistemleri, Oda durumu monitörleri, Radyoloji istek ve raporlama sistemleri, Ameliyathane planlama sistemleri, Fatura ve muayene entegrasyonları',
-      apiIntegrationsTitle: 'API Entegrasyonları',
-      apiIntegrations: [
+    aboutSection: {
+      content: "C# ve .NET başta olmak üzere Angular, REST API ve SQL teknolojileriyle kurumsal yazılımlar geliştiriyorum. Özellikle hastane bilgi yönetim sistemleri (HBYS), hasta takip ekranları, agent job’lar ve veri entegrasyonları üzerine yoğun tecrübem var. Gerçek zamanlı veri işleme, dashboard geliştirme ve yönetilebilir sistemler oluşturma konularında çalışıyorum.",
+      isActive: true
+    },
+    skillsSection: {
+      isActive: true,
+      skills: [
         {
-          id: 1,
-          name: 'MHRS Entegrasyonu',
-          description: 'Merkezi Hekim Randevu Sistemi ile entegrasyon',
+          name: "C#",
+          level: 90,
+          category: "Backend",
+          order: 1,
           isActive: true
         },
         {
-          id: 2,
-          name: 'E-Nabız Entegrasyonu',
-          description: 'Ulusal elektronik sağlık kayıt sistemine bağlanma',
+          name: ".NET",
+          level: 85,
+          category: "Backend",
+          order: 2,
           isActive: true
         },
         {
-          id: 3,
-          name: 'Medula Entegrasyonu',
-          description: 'Sosyal Güvenlik Kurumu faturalama sistemi',
+          name: "SQL",
+          level: 80,
+          category: "Backend",
+          order: 3,
+          isActive: true
+        },
+        {
+          name: "Angular",
+          level: 80,
+          category: "Frontend",
+          order: 4,
+          isActive: true
+        },
+        {
+          name: "DevExpress",
+          level: 75,
+          category: "Tools",
+          order: 5,
+          isActive: true
+        },
+        {
+          name: "REST API",
+          level: 85,
+          category: "Backend",
+          order: 6,
+          isActive: true
+        },
+        {
+          name: "WordPress",
+          level: 65,
+          category: "Tools",
+          order: 7,
           isActive: true
         }
-      ],
-      agentJobsTitle: 'Arka Plan İşleri',
-      agentJobs: [
+      ]
+    },
+    projectsSection: {
+      isActive: true,
+      projects: [
         {
-          id: 1,
-          name: 'Veri Senkronizasyonu',
-          description: 'Farklı sistemler arasında veri aktarımı',
+          title: "Hasta Bileklik Takip Sistemi",
+          description: "Hastaya takılı bilekliklerin aktif zaman aralıklarını takip eden, agent job ile periyodik API çağrıları yapan ve konum verilerini veritabanına kaydeden sistem.",
+          technologies: ["C#", ".NET", "REST API", "SQL"],
+          order: 1,
           isActive: true
         },
         {
-          id: 2,
-          name: 'Rapor Oluşturma',
-          description: 'Otomatik rapor oluşturma ve dağıtımı',
+          title: "Oda Durum ve Hasta Hareket Takip Ekranı",
+          description: "Hastane içinde hasta hareketlerini izleyen, anlık güncellenen ve kritik geçişleri vurgulayan WinForms tabanlı ekran.",
+          technologies: ["C#", "WinForms", "DevExpress", "SQL"],
+          order: 2,
           isActive: true
         },
         {
-          id: 3,
-          name: 'Bildirim Sistemleri',
-          description: 'SMS ve e-posta bildirimleri',
+          title: "Radyoloji İstek ve Açıklama Yönetimi",
+          description: "Doktor istemleri sırasında klinik açıklamaların yönetildiği, servis katmanı üzerinden kayıt alınan HBYS modülü.",
+          technologies: ["C#", ".NET", "SQL"],
+          order: 3,
+          isActive: true
+        },
+        {
+          title: "QR Menü Uygulaması",
+          description: "Restoranlar için geliştirilen, mobil uyumlu ve yönetilebilir QR menü uygulaması.",
+          technologies: ["Angular", "Bootstrap"],
+          order: 4,
           isActive: true
         }
-      ],
-      dashboardProjectsTitle: 'Gösterge Tabloları',
-      dashboardProjects: [
-        {
-          id: 1,
-          name: 'Hastane Yönetim Paneli',
-          description: 'Hastane personeli için merkezi yönetim paneli',
-          isActive: true
-        },
-        {
-          id: 2,
-          name: 'Doktor Performans Gösterge Tablosu',
-          description: 'Doktorların performans metriklerinin görselleştirilmesi',
-          isActive: true
-        },
-        {
-          id: 3,
-          name: 'Hasta Memnuniyeti İzleme',
-          description: 'Hasta memnuniyeti metriklerinin takibi',
-          isActive: true
-        }
-      ],
-      imageUrl: 'assets/images/profile.jpg',
-      isActive: true
+      ]
     },
-    skills: {
-      title: 'Yeteneklerim',
-      certificatesTitle: 'Sertifikalarım',
-      isActive: true
-    },
-    projects: {
-      title: 'Projelerim',
-      isActive: true
-    },
-    contact: {
-      title: 'İletişim',
-      contactFormTitle: 'Bana Ulaşın',
-      contactInfoTitle: 'İletişim Bilgilerim',
-      socialMediaTitle: 'Sosyal Medya',
-      downloadCvTitle: 'CV\'mi İndirin',
-      emailLabel: 'E-posta',
-      phoneLabel: 'Telefon',
-      addressLabel: 'Adres',
-      namePlaceholder: 'Adınız',
-      emailPlaceholder: 'E-posta Adresiniz',
-      subjectPlaceholder: 'Konu',
-      messagePlaceholder: 'Mesajınız',
-      sendMessageButton: 'Mesaj Gönder',
-      email: 'email@example.com',
-      phone: '+90 555 555 55 55',
-      address: 'İstanbul, Türkiye',
-      socialLinks: [
-        { 
-          id: 1,
-          name: 'LinkedIn', 
-          url: '#', 
-          icon: 'fab fa-linkedin',
-          isActive: true
-        },
-        { 
-          id: 2,
-          name: 'GitHub', 
-          url: '#', 
-          icon: 'fab fa-github',
-          isActive: true
-        },
-        { 
-          id: 3,
-          name: 'Twitter', 
-          url: '#', 
-          icon: 'fab fa-twitter',
-          isActive: true
-        }
-      ],
-      isActive: true
-    },
-    footer: {
-      copyrightText: '© 2023 Tüm hakları saklıdır.',
-      socialLinks: [
-        { 
-          id: 1,
-          name: 'LinkedIn', 
-          url: '#', 
-          icon: 'fab fa-linkedin',
-          isActive: true
-        },
-        { 
-          id: 2,
-          name: 'GitHub', 
-          url: '#', 
-          icon: 'fab fa-github',
-          isActive: true
-        },
-        { 
-          id: 3,
-          name: 'Twitter', 
-          url: '#', 
-          icon: 'fab fa-twitter',
-          isActive: true
-        }
-      ],
-      isActive: true
-    },
-    isActive: true
+    contactSection: {
+      isActive: true,
+      email: "ensar@example.com",
+      github: "https://github.com/ensarce",
+      linkedin: "",
+      whatsapp: ""
+    }
   };
-
-  // BehaviorSubjects for reactive content updates
-  private siteSettingsSubject = new BehaviorSubject<SiteSettings>(this.defaultSiteSettings);
-
+  
+  // BehaviorSubject for reactive content updates
+  private contentSubject = new BehaviorSubject<PortfolioContent>(this.defaultContent);
+  
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
     
@@ -218,30 +218,79 @@ export class ContentManagementService {
   
   private loadContentFromStorage(): void {
     try {
-      const storedSiteSettings = localStorage.getItem('siteSettings');
-      
-      if (storedSiteSettings) {
-        this.siteSettingsSubject.next(JSON.parse(storedSiteSettings));
+      const storedContent = localStorage.getItem('portfolioContent');
+      if (storedContent) {
+        this.contentSubject.next(JSON.parse(storedContent));
       }
     } catch (e) {
       console.warn('Failed to load content from localStorage');
     }
   }
   
-  // Site settings methods
-  getSiteSettings(): Observable<SiteSettings> {
-    return this.siteSettingsSubject.asObservable();
+  // Get portfolio content as observable
+  getContent(): Observable<PortfolioContent> {
+    return this.contentSubject.asObservable();
   }
   
-  updateSiteSettings(settings: SiteSettings): void {
-    this.siteSettingsSubject.next(settings);
+  // Update portfolio content
+  updateContent(content: PortfolioContent): void {
+    this.contentSubject.next(content);
     if (this.isBrowser) {
-      localStorage.setItem('siteSettings', JSON.stringify(settings));
+      localStorage.setItem('portfolioContent', JSON.stringify(content));
     }
   }
   
   // Reset to default content
   resetToDefault(): void {
-    this.updateSiteSettings(this.defaultSiteSettings);
+    this.updateContent(this.defaultContent);
+  }
+  
+  // Get individual section content
+  getSiteSettings(): Observable<SiteSettings> {
+    return new Observable(observer => {
+      this.getContent().subscribe(content => {
+        observer.next(content.siteSettings);
+      });
+    });
+  }
+  
+  getHeroSection(): Observable<HeroSection> {
+    return new Observable(observer => {
+      this.getContent().subscribe(content => {
+        observer.next(content.heroSection);
+      });
+    });
+  }
+  
+  getAboutSection(): Observable<AboutSection> {
+    return new Observable(observer => {
+      this.getContent().subscribe(content => {
+        observer.next(content.aboutSection);
+      });
+    });
+  }
+  
+  getSkillsSection(): Observable<SkillsSection> {
+    return new Observable(observer => {
+      this.getContent().subscribe(content => {
+        observer.next(content.skillsSection);
+      });
+    });
+  }
+  
+  getProjectsSection(): Observable<ProjectsSection> {
+    return new Observable(observer => {
+      this.getContent().subscribe(content => {
+        observer.next(content.projectsSection);
+      });
+    });
+  }
+  
+  getContactSection(): Observable<ContactSection> {
+    return new Observable(observer => {
+      this.getContent().subscribe(content => {
+        observer.next(content.contactSection);
+      });
+    });
   }
 }
